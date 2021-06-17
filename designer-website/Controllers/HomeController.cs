@@ -12,8 +12,9 @@ namespace designer_website.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        
+        private readonly MSDBcontext dbcontext;
+        public HomeController(ILogger<HomeController> logger, MSDBcontext dbcontext)
         {
             _logger = logger;
         }

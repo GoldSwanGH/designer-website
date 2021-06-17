@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace designer_website
 {
-    public partial class msdbcontext : DbContext
+    public partial class MSDBcontext : DbContext
     {
-        public msdbcontext()
+        public MSDBcontext()
         {
         }
 
-        public msdbcontext(DbContextOptions<msdbcontext> options)
+        public MSDBcontext(DbContextOptions<MSDBcontext> options)
             : base(options)
         {
         }
