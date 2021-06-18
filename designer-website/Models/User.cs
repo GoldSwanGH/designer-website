@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace designer_website
+namespace designer_website.Models
 {
     public partial class User
     {
@@ -18,6 +18,7 @@ namespace designer_website
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
         public int? Tel { get; set; }
         public int RoleId { get; set; }
         public int OptionsId { get; set; }

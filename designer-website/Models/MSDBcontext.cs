@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace designer_website
+namespace designer_website.Models
 {
     public partial class MSDBcontext : DbContext
     {
@@ -30,6 +30,7 @@ namespace designer_website
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-EHI5BK7\\SQLEXPRESS;Database=designer-website;Trusted_Connection=True;");
             }
         }
@@ -44,9 +45,7 @@ namespace designer_website
 
                 entity.ToTable("DesignerOrderInfoID");
 
-                entity.Property(e => e.DesignerOrderInfoId1)
-                    .ValueGeneratedNever()
-                    .HasColumnName("DesignerOrderInfoID");
+                entity.Property(e => e.DesignerOrderInfoId1).HasColumnName("DesignerOrderInfoID");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
@@ -71,9 +70,7 @@ namespace designer_website
 
                 entity.ToTable("OrderInfo");
 
-                entity.Property(e => e.OrderId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("OrderID");
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
                 entity.Property(e => e.Date).HasColumnType("date");
 
@@ -102,9 +99,7 @@ namespace designer_website
                 entity.HasIndex(e => e.RoleId, "UK_Role_RoleName")
                     .IsUnique();
 
-                entity.Property(e => e.RoleId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("RoleID");
+                entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
                 entity.Property(e => e.RoleName)
                     .IsRequired()
@@ -119,9 +114,7 @@ namespace designer_website
                 entity.HasIndex(e => e.ServiceId, "UK_Service_ServiceName")
                     .IsUnique();
 
-                entity.Property(e => e.ServiceId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ServiceID");
+                entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
 
                 entity.Property(e => e.ServiceName)
                     .IsRequired()
@@ -139,9 +132,7 @@ namespace designer_website
                 entity.HasIndex(e => e.Tel, "UK_User_Tel")
                     .IsUnique();
 
-                entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("UserID");
+                entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -160,6 +151,11 @@ namespace designer_website
                 entity.Property(e => e.OptionsId)
                     .HasColumnName("OptionsID")
                     .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(70)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.RoleId)
                     .HasColumnName("RoleID")
@@ -182,18 +178,14 @@ namespace designer_website
             {
                 entity.HasKey(e => e.OptionsId);
 
-                entity.Property(e => e.OptionsId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("OptionsID");
+                entity.Property(e => e.OptionsId).HasColumnName("OptionsID");
             });
 
             modelBuilder.Entity<UserWork>(entity =>
             {
                 entity.ToTable("UserWork");
 
-                entity.Property(e => e.UserWorkId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("UserWorkID");
+                entity.Property(e => e.UserWorkId).HasColumnName("UserWorkID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
@@ -216,9 +208,7 @@ namespace designer_website
             {
                 entity.ToTable("Work");
 
-                entity.Property(e => e.WorkId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("WorkID");
+                entity.Property(e => e.WorkId).HasColumnName("WorkID");
 
                 entity.Property(e => e.Date).HasColumnType("date");
 

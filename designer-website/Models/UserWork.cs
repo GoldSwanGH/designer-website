@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace designer_website
+namespace designer_website.Models
 {
     public partial class UserWork
     {
