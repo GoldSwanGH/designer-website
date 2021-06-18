@@ -13,6 +13,7 @@ namespace designer_website.Models
         }
 
         public int OptionsId { get; set; }
+        public byte? AllowEmail { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
     }

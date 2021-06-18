@@ -1,8 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Sign In";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Sign in</p>
+    @using (Html.BeginForm("CreateUser", "Auth", FormMethod.Post))
+    {
+        <p>
+            <label>E-mail</label><br/>
+            <input type="text" name="Email"/>
+        </p>
+        <p>
+            <label>Password</label><br/>
+            <input type="password" name="Password"/>
+        </p>
+        <p>
+            <label>First Name</label><br/>
+            <input type="text" name="FirstName"/>
+        </p>
+        <p>
+            <input type="submit" value="Sign In"/>
+        </p>
+    }
 </div>
