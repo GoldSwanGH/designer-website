@@ -22,7 +22,6 @@ namespace designer_website.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserOption> UserOptions { get; set; }
         public virtual DbSet<UserWork> UserWorks { get; set; }
         public virtual DbSet<Work> Works { get; set; }
 
@@ -129,9 +128,6 @@ namespace designer_website.Models
                 entity.HasIndex(e => e.Email, "UK_User_Email")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Tel, "UK_User_Tel")
-                    .IsUnique();
-
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.Email)
@@ -148,10 +144,6 @@ namespace designer_website.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.OptionsId)
-                    .HasColumnName("OptionsID")
-                    .HasDefaultValueSql("((1))");
-
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(70)
@@ -161,24 +153,11 @@ namespace designer_website.Models
                     .HasColumnName("RoleID")
                     .HasDefaultValueSql("((3))");
 
-                entity.HasOne(d => d.Options)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.OptionsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_UserOptions");
-
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_Role");
-            });
-
-            modelBuilder.Entity<UserOption>(entity =>
-            {
-                entity.HasKey(e => e.OptionsId);
-
-                entity.Property(e => e.OptionsId).HasColumnName("OptionsID");
             });
 
             modelBuilder.Entity<UserWork>(entity =>

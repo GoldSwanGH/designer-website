@@ -21,9 +21,7 @@ namespace designer_website.Models
         public string Password { get; set; }
         public int? Tel { get; set; }
         public int RoleId { get; set; }
-        public int OptionsId { get; set; }
 
-        public virtual UserOption Options { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<DesignerOrderInfoId> DesignerOrderInfoIds { get; set; }
         public virtual ICollection<OrderInfo> OrderInfos { get; set; }
