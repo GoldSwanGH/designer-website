@@ -21,7 +21,7 @@ namespace designer_website.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SignIn(User user)
+        public IActionResult SignIn(UserViewModel userViewModel)
         {
             // старый код
             /*
@@ -52,12 +52,12 @@ namespace designer_website.Controllers
             
             if (ModelState.IsValid) 
             {
-                _dbcontext.Users.Add(user);
+                _dbcontext.Users.Add(userViewModel.ToUser());
                 _dbcontext.SaveChanges();
                 return RedirectToAction("UserCreated");
-            }
+            }   
             
-            return View(user); // Если валидация не прошла, возвращаемся на страницу регистрации.
+            return View(userViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
 
         public IActionResult UserCreated()

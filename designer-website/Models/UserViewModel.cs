@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using BC = BCrypt.Net.BCrypt;
 
 namespace designer_website.Models
 {
@@ -29,26 +31,43 @@ namespace designer_website.Models
         [Required]
         [DataType(DataType.Password)]
         [DisplayName("Confirm password")]
-        [SameAs("Password", ErrorMessage = "It should be similar to Password")]
+        [ConfirmPassword]
         public string ConfirmPassword { get; set; }
         
         [Required]
         [DataType(DataType.PhoneNumber)]
         [DisplayName("Phone number")]
         public int? Tel { get; set; }
+
+        public User ToUser()
+        {
+            User user = new User();
+            user.Email = this.Email;
+            user.Password = BC.HashPassword(this.Password);
+            user.Tel = this.Tel;
+            user.FirstName = this.FirstName;
+            user.LastName = this.LastName;
+            return user;
+        }
     }
 
-    public class SameAsAttribute : ValidationAttribute
+    public class ConfirmPasswordAttribute : ValidationAttribute//, IClientModelValidator
     {
-        public string Property { get; set; }
-        public SameAsAttribute(string Property)
+        private string GetErrorMessage() => "Пароли не совпадают";
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            this.Property = Property;
+            var userViewModel = (UserViewModel)validationContext.ObjectInstance;
+            if (userViewModel.Password != userViewModel.ConfirmPassword)
+            {
+                return new ValidationResult(GetErrorMessage());
+            }
+            return ValidationResult.Success;
         }
-        public override bool IsValid(object value)
+        /*
+        public void AddValidation(ClientModelValidationContext context)
         {
-            //Any additional validation logic specific to the property can go here.
-            return true;
-        }   
+            throw new NotImplementedException();
+        }
+        */
     }
 }
