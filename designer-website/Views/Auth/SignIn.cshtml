@@ -1,25 +1,45 @@
 ﻿@{
     ViewData["Title"] = "Sign In";
 }
+@using static BCrypt.Net.BCrypt
+@using BCrypt.Net
+@model User;
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    @using (Html.BeginForm("CreateUser", "Auth", FormMethod.Post))
+    @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post))
     {
-        <p>
-            <label>E-mail</label><br/>
-            <input type="text" name="Email"/>
-        </p>
-        <p>
-            <label>Password</label><br/>
-            <input type="password" name="Password"/>
-        </p>
-        <p>
-            <label>First Name</label><br/>
-            <input type="text" name="FirstName"/>
-        </p>
-        <p>
-            <input type="submit" value="Sign In"/>
-        </p>
+        @Html.LabelFor(m => m.Email)
+        <br />
+        @Html.EditorFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email)
+        <br /><br />
+        
+        @Html.LabelFor(m => m.Password)
+        <br />
+        @Html.EditorFor(m => m.Password)
+        @Html.ValidationMessageFor(m => m.Password)
+        <br /><br />
+
+        @Html.LabelFor(m => m.FirstName)
+        <br />
+        @Html.EditorFor(m => m.FirstName)
+        @Html.ValidationMessageFor(m => m.FirstName)
+        <br /><br />
+              
+        @Html.LabelFor(m => m.LastName)
+        <br />
+        @Html.EditorFor(m => m.LastName)
+        @Html.ValidationMessageFor(m => m.LastName)
+        <br /><br />
+              
+        @Html.LabelFor(m => m.Tel)
+        <br />
+        @Html.EditorFor(m => m.Tel)
+        @Html.ValidationMessageFor(m => m.Tel)
+        <br /><br />
+
+        <input type="submit" value="Sign In"/>
+
     }
 </div>

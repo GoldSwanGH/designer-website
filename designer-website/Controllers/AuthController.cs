@@ -15,19 +15,23 @@ namespace designer_website.Controllers
             this._dbcontext = dbcontext;
             this._logger = logger;
         }
-        // GET
+        [HttpGet]
         public IActionResult SignIn()
         {
-            
             return View();
         }
         [HttpPost]
-        public IActionResult CreateUser()
+        public IActionResult SignIn(User user)
         {
+            // старый код
+            /*
             int count = Request.Form.Count;
             ViewData["Count"] = count;
             
             string email = Request.Form["email"];
+            // если есть такой пользователь - возвращаем пользователя на SignIn с подписью, что User с таким Email 
+            // уже существует
+            
             string password = BC.HashPassword((string)Request.Form["password"]);
             string firstName = Request.Form["firstname"];
             
@@ -39,8 +43,25 @@ namespace designer_website.Controllers
             _dbcontext.SaveChanges();
             
             ViewData["Email"] = email;
-            ViewData["FirstName"] = firstName;
+            ViewData["FirstName"] = firstName; */
             
+            // новый код
+            
+            /* Валидация происходит либо на стороне клиента, либо на сервере через ModelState.IsValid, если у клиента
+             отключен JavaScript. Правила валидации описаны в моделях. */
+            
+            if (ModelState.IsValid) 
+            {
+                _dbcontext.Users.Add(user);
+                _dbcontext.SaveChanges();
+                return RedirectToAction("UserCreated");
+            }
+            
+            return View(user); // Если валидация не прошла, возвращаемся на страницу регистрации.
+        }
+
+        public IActionResult UserCreated()
+        {
             return View();
         }
     }
