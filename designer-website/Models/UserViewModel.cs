@@ -9,9 +9,9 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace designer_website.Models
 {
-    public class UserViewModel // тестовая версия модели для валидации
+    public class UserViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Text)]
         [DisplayName("First name")]
         public string FirstName { get; set; }
@@ -20,28 +20,29 @@ namespace designer_website.Models
         [DisplayName("Last name")]
         public string LastName { get; set; }
         
-        [Required]
-        [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "Это обязательное поле.")]
+        [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
         [DisplayName("Email address")]
         [CheckEmailAvailability]
         public string Email { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Password")]
         public string Password { get; set; }
         // возможно, стоит уже в View шифровать пароль пользователя с помощью bcrypt, чтобы не отправлять пароль текстом
         
-        [Required]
+        [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Confirm password")]
         [ConfirmPassword]
         public string ConfirmPassword { get; set; }
         
-        [Required]
-        [DataType(DataType.PhoneNumber)]
+        [Required(ErrorMessage = "Это обязательное поле.")]
+        [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
+        //[RegularExpression(@"^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$", ErrorMessage = "Номер телефона введен неправильно2.")]
         [DisplayName("Phone number")]
-        public int? Tel { get; set; }
+        public string Tel { get; set; }
 
         public User ToUser()
         {
@@ -57,7 +58,7 @@ namespace designer_website.Models
 
     public class ConfirmPasswordAttribute : ValidationAttribute//, IClientModelValidator
     {
-        private string GetErrorMessage() => "Пароли не совпадают";
+        private string GetErrorMessage() => "Пароли не совпадают.";
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var userViewModel = (UserViewModel)validationContext.ObjectInstance;
@@ -78,7 +79,7 @@ namespace designer_website.Models
     public class CheckEmailAvailabilityAttribute : ValidationAttribute
     {
         private MSDBcontext _dbcontext;
-        private string GetErrorMessage() => "Пользователь с таким Email уже существует";
+        private string GetErrorMessage() => "Пользователь с таким Email уже существует.";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
