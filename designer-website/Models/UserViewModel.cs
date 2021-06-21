@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -69,11 +70,25 @@ namespace designer_website.Models
             return ValidationResult.Success;
         }
         /*
+        Следующий кусок кода должен был реализовывать IClientModelValidator для работы валидации Confirm password на
+        стороне клиента, но, судя по всему, там нужно еще и с JS поработать на стороне клиента, поэтому пока реализация
+        отложена.
+        
         public void AddValidation(ClientModelValidationContext context)
         {
             throw new NotImplementedException();
         }
-        */
+        
+        private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (attributes.ContainsKey(key))
+            {
+                return false;
+            }
+
+            attributes.Add(key, value);
+            return true;
+        } */
     }
 
     public class CheckEmailAvailabilityAttribute : ValidationAttribute
