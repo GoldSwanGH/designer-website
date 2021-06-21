@@ -25,4 +25,8 @@
     <ItemGroup>
       <Content Remove="Views\Auth\CreateUser.cshtml" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Models\UserOption.cs" />
+    </ItemGroup>
 </Project>
