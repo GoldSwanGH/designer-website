@@ -153,6 +153,11 @@ namespace designer_website.Models
                     .HasColumnName("RoleID")
                     .HasDefaultValueSql("((3))");
 
+                entity.Property(e => e.Tel)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
