@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Sign In";
+    ViewData["Title"] = "Sign Up";
 }
 @using static BCrypt.Net.BCrypt
 @using BCrypt.Net
@@ -7,7 +7,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post))
+    @using (Html.BeginForm("SignUp", "Account", FormMethod.Post))
     {
         @Html.LabelFor(m => m.Email)
         <br />
