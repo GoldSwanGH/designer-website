@@ -25,7 +25,7 @@ namespace designer_website.Models
         [Required(ErrorMessage = "Это обязательное поле.")]
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
         [DisplayName("Email address")]
-        [CheckEmailAvailability]
+        [CheckEmailAvailability(false)]
         public string Email { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
