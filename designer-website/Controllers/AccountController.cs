@@ -16,15 +16,15 @@ namespace designer_website.Controllers
             this._logger = logger;
         }
         [HttpGet]
-        public IActionResult SignUp()
+        public IActionResult Register()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult SignUp(UserViewModel userViewModel)
+        public IActionResult Register(UserViewModel userViewModel)
         {
 
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 _dbcontext.Users.Add(userViewModel.ToUser());
                 _dbcontext.SaveChanges();
@@ -34,8 +34,16 @@ namespace designer_website.Controllers
             return View(userViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         public IActionResult EmailConfirmation()
         {
+            /* Сделать настраиваемый текст и ссылку, чтобы использовать эту страницу как для подтверждения регистрации,
+               так и для смены пароля */
+            ViewData["Text"] = "Check your email and follow the link to continue.";
             return View();
         }
 
