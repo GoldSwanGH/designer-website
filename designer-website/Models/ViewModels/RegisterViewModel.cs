@@ -11,27 +11,14 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace designer_website.Models
 {
-    public class UserViewModel
+    public class RegisterViewModel : UserViewModel
     {
-        [Required(ErrorMessage = "Это обязательное поле.")]
-        [DataType(DataType.Text)]
-        [DisplayName("First name")]
-        public string FirstName { get; set; }
-        
-        [DataType(DataType.Text)]
-        [DisplayName("Last name")]
-        public string LastName { get; set; }
-        
         [Required(ErrorMessage = "Это обязательное поле.")]
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
         [DisplayName("Email address")]
         [CheckEmailAvailability(false)]
-        public string Email { get; set; }
+        public new string Email { get; set; }
         
-        [Required(ErrorMessage = "Это обязательное поле.")]
-        [DataType(DataType.Password)]
-        [DisplayName("Password")]
-        public string Password { get; set; }
         // возможно, стоит уже в View шифровать пароль пользователя с помощью bcrypt, чтобы не отправлять пароль текстом
         
         [Required(ErrorMessage = "Это обязательное поле.")]
