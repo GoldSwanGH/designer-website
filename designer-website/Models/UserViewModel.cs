@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
+using designer_website.Attributes;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using BC = BCrypt.Net.BCrypt;
@@ -54,58 +55,6 @@ namespace designer_website.Models
             user.FirstName = this.FirstName;
             user.LastName = this.LastName;
             return user;
-        }
-    }
-
-    public class ConfirmPasswordAttribute : ValidationAttribute//, IClientModelValidator
-    {
-        private string GetErrorMessage() => "Пароли не совпадают.";
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var userViewModel = (UserViewModel)validationContext.ObjectInstance;
-            if (userViewModel.Password != userViewModel.ConfirmPassword)
-            {
-                return new ValidationResult(GetErrorMessage());
-            }
-            return ValidationResult.Success;
-        }
-        /*
-        Следующий кусок кода должен был реализовывать IClientModelValidator для работы валидации Confirm password на
-        стороне клиента, но, судя по всему, там нужно еще и с JS поработать на стороне клиента, поэтому пока реализация
-        отложена.
-        
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            throw new NotImplementedException();
-        }
-        
-        private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (attributes.ContainsKey(key))
-            {
-                return false;
-            }
-
-            attributes.Add(key, value);
-            return true;
-        } */
-    }
-
-    public class CheckEmailAvailabilityAttribute : ValidationAttribute
-    {
-        private MSDBcontext _dbcontext;
-        private string GetErrorMessage() => "Пользователь с таким Email уже существует.";
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            _dbcontext = validationContext.GetService(typeof(MSDBcontext)) as MSDBcontext;
-            var userViewModel = (UserViewModel)validationContext.ObjectInstance;
-            var sameEmailUser = _dbcontext.Users.FirstOrDefault(u => u.Email == userViewModel.Email);
-            if (sameEmailUser != null)
-            {
-                return new ValidationResult(GetErrorMessage());
-            }
-            return ValidationResult.Success;
         }
     }
 }
