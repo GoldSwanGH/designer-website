@@ -34,6 +34,11 @@ namespace designer_website.Controllers
             return View(userViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
 
+        public IActionResult EmailConfirmation()
+        {
+            return View();
+        }
+
         public IActionResult UserCreated()
         {
             return View();
