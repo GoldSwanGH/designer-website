@@ -6,7 +6,7 @@
 @model UserViewModel;
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Sign in</h1>
     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
     {
         @Html.LabelFor(m => m.Email)
@@ -25,24 +25,6 @@
         <br />
         @Html.EditorFor(m => m.ConfirmPassword)
         @Html.ValidationMessageFor(m => m.ConfirmPassword)
-        <br /><br />
-
-        @Html.LabelFor(m => m.FirstName)
-        <br />
-        @Html.EditorFor(m => m.FirstName)
-        @Html.ValidationMessageFor(m => m.FirstName)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.LastName)
-        <br />
-        @Html.EditorFor(m => m.LastName)
-        @Html.ValidationMessageFor(m => m.LastName)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.Tel)
-        <br />
-        @Html.EditorFor(m => m.Tel)
-        @Html.ValidationMessageFor(m => m.Tel)
         <br /><br />
 
         <input type="submit" value="Sign In"/>

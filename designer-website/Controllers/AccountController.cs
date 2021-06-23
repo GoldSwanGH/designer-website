@@ -33,8 +33,15 @@ namespace designer_website.Controllers
             
             return View(userViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
-
+        
+        [HttpGet]
         public IActionResult Login()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Login(UserViewModel userViewModel)
         {
             return View();
         }
