@@ -6,7 +6,7 @@
 @model UserViewModel;
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Sign up now!</h1>
     @using (Html.BeginForm("Register", "Account", FormMethod.Post))
     {
         @Html.LabelFor(m => m.Email)
@@ -45,7 +45,7 @@
         @Html.ValidationMessageFor(m => m.Tel)
         <br /><br />
 
-        <input type="submit" value="Sign In"/>
+        <input type="submit" value="Sign Up"/>
 
     }
 </div>
