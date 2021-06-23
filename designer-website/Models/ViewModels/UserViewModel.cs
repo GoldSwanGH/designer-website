@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using designer_website.Attributes;
 
 namespace designer_website.Models
 {
@@ -23,5 +24,11 @@ namespace designer_website.Models
         [DataType(DataType.Password)]
         [DisplayName("Password")]
         public string Password { get; set; }
+        
+        [Required(ErrorMessage = "Это обязательное поле.")]
+        [DataType(DataType.Password)]
+        [DisplayName("Confirm password")]
+        [ConfirmPassword]
+        public string ConfirmPassword { get; set; }
     }
 }

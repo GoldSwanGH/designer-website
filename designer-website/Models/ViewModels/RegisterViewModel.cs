@@ -18,15 +18,7 @@ namespace designer_website.Models
         [DisplayName("Email address")]
         [CheckEmailAvailability(false)]
         public new string Email { get; set; }
-        
-        // возможно, стоит уже в View шифровать пароль пользователя с помощью bcrypt, чтобы не отправлять пароль текстом
-        
-        [Required(ErrorMessage = "Это обязательное поле.")]
-        [DataType(DataType.Password)]
-        [DisplayName("Confirm password")]
-        [ConfirmPassword]
-        public string ConfirmPassword { get; set; }
-        
+
         [Required(ErrorMessage = "Это обязательное поле.")]
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
         //[RegularExpression(@"^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$", ErrorMessage = "Номер телефона введен неправильно2.")]
