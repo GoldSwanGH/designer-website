@@ -26,14 +26,16 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                     <li class="nav-item">
-                        <p class="nav-link text-dark">Hello, @if (User.Identity != null)
-                                                             {
-                                                                 <a asp-area="" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
-                                                             }
-                                                             else
-                                                             {
-                                                                 <a asp-area="" asp-controller="Account" asp-action="Login"> Guest! Please sign in!</a>
-                                                             }</p>
+                        
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <p class="nav-link text-dark">Hello, <a asp-area="" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a></p>
+                            }
+                            else
+                            {
+                                <p class="nav-link text-dark">Guest! Please <a asp-area="" asp-controller="Account" asp-action="Login">sign in!</a></p>
+                            }
+                        
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
