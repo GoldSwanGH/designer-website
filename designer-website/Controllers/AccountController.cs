@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using designer_website.Filters;
 using designer_website.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -25,11 +26,13 @@ namespace designer_website.Controllers
             this._logger = logger;
         }
         [HttpGet]
+        [AnonymousOnlyFilter]
         public IActionResult Register()
         {
             return View();
         }
         [HttpPost]
+        [AnonymousOnlyFilter]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
 
@@ -59,12 +62,14 @@ namespace designer_website.Controllers
         }
         
         [HttpGet]
+        [AnonymousOnlyFilter]
         public IActionResult Login()
         {
             return View();
         }
         
         [HttpPost]
+        [AnonymousOnlyFilter]
         public async Task<IActionResult> Login(LoginViewModel userViewModel)
         {
             if (ModelState.IsValid)
@@ -83,6 +88,7 @@ namespace designer_website.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
