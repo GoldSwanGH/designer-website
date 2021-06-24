@@ -27,7 +27,7 @@ namespace designer_website.Models
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Password")]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Длина пароля должна быть от 6 до 50 символов")]
+        [StringLength(50, MinimumLength = 8, ErrorMessage = "Длина пароля должна быть от 8 до 50 символов")]
         public override string Password { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
