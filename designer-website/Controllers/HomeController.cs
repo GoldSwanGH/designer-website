@@ -19,7 +19,7 @@ namespace designer_website.Controllers
         {
             _logger = logger;
         }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -32,6 +32,12 @@ namespace designer_website.Controllers
         
         [Authorize(Roles = "Admin")]
         public IActionResult About()
+        {
+            return View();
+        }
+        
+        [Route("AccessDenied")]
+        public IActionResult AccessDenied()
         {
             return View();
         }
