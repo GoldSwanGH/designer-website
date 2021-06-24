@@ -24,7 +24,7 @@ namespace designer_website.Models
         
         [DataType(DataType.Password)]
         [DisplayName("Confirm password")]
-        [ConfirmPassword]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public virtual string ConfirmPassword { get; set; }
         
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
