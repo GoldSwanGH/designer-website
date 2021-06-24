@@ -3,12 +3,13 @@
 }
 @using static BCrypt.Net.BCrypt
 @using BCrypt.Net
-@model UserViewModel;
+@model LoginViewModel;
 
 <div class="text-center">
     <h1 class="display-4">Sign in</h1>
     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
     {
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
         @Html.LabelFor(m => m.Email)
         <br />
         @Html.EditorFor(m => m.Email)
