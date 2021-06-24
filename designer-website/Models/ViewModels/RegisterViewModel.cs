@@ -17,13 +17,28 @@ namespace designer_website.Models
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
         [DisplayName("Email address")]
         [CheckEmailAvailability(false)]
-        public new string Email { get; set; }
+        public override string Email { get; set; }
+        
+        [Required(ErrorMessage = "Это обязательное поле.")]
+        [DataType(DataType.Text)]
+        [DisplayName("First name")]
+        public override string FirstName { get; set; }
+        
+        [Required(ErrorMessage = "Это обязательное поле.")]
+        [DataType(DataType.Password)]
+        [DisplayName("Password")]
+        public override string Password { get; set; }
+        
+        [Required(ErrorMessage = "Это обязательное поле.")]
+        [DataType(DataType.Password)]
+        [DisplayName("Confirm password")]
+        [ConfirmPassword]
+        public override string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Это обязательное поле.")]
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
-        //[RegularExpression(@"^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$", ErrorMessage = "Номер телефона введен неправильно2.")]
         [DisplayName("Phone number")]
-        public string Tel { get; set; }
+        public override string Tel { get; set; }
 
         public User ToUser()
         {

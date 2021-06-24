@@ -6,29 +6,29 @@ namespace designer_website.Models
 {
     public class UserViewModel
     {
-        [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Text)]
         [DisplayName("First name")]
-        public string FirstName { get; set; }
+        public virtual string FirstName { get; set; }
         
         [DataType(DataType.Text)]
         [DisplayName("Last name")]
-        public string LastName { get; set; }
+        public virtual string LastName { get; set; }
         
-        [Required(ErrorMessage = "Это обязательное поле.")]
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
         [DisplayName("Email address")]
-        public string Email { get; set; }
+        public virtual string Email { get; set; }
         
-        [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Password")]
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
         
-        [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Confirm password")]
         [ConfirmPassword]
-        public string ConfirmPassword { get; set; }
+        public virtual string ConfirmPassword { get; set; }
+        
+        [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
+        [DisplayName("Phone number")]
+        public virtual string Tel { get; set; }
     }
 }
