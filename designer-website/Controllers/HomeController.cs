@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using designer_website.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace designer_website.Controllers
 {
@@ -25,6 +26,12 @@ namespace designer_website.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        
+        [Authorize(Roles = "Admin")]
+        public IActionResult About()
         {
             return View();
         }

@@ -1,14 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Sign Up";
+    ViewData["Title"] = "Sign in";
 }
 @using static BCrypt.Net.BCrypt
 @using BCrypt.Net
-@model UserViewModel;
+@model LoginViewModel;
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    @using (Html.BeginForm("SignUp", "Account", FormMethod.Post))
+    <h1 class="display-4">Sign in</h1>
+    <p>Don't have an account yet? @Html.ActionLink("Sign up", "Register", "Account")</p>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
     {
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
         @Html.LabelFor(m => m.Email)
         <br />
         @Html.EditorFor(m => m.Email)
@@ -25,24 +27,6 @@
         <br />
         @Html.EditorFor(m => m.ConfirmPassword)
         @Html.ValidationMessageFor(m => m.ConfirmPassword)
-        <br /><br />
-
-        @Html.LabelFor(m => m.FirstName)
-        <br />
-        @Html.EditorFor(m => m.FirstName)
-        @Html.ValidationMessageFor(m => m.FirstName)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.LastName)
-        <br />
-        @Html.EditorFor(m => m.LastName)
-        @Html.ValidationMessageFor(m => m.LastName)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.Tel)
-        <br />
-        @Html.EditorFor(m => m.Tel)
-        @Html.ValidationMessageFor(m => m.Tel)
         <br /><br />
 
         <input type="submit" value="Sign In"/>
