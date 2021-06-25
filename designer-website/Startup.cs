@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using designer_website.Interfaces;
 using designer_website.Models;
+using designer_website.Models.EntityFrameworkModels;
 using designer_website.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;

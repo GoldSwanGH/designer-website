@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using designer_website.Attributes;
+using designer_website.Models.EntityFrameworkModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using BC = BCrypt.Net.BCrypt;
