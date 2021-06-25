@@ -6,13 +6,13 @@ using MimeKit;
 
 namespace designer_website.Services
 {
-    public class SmtpEmailSender : ISmtpEmailSender
+    public class GmailSmtpEmailSender : ISmtpEmailSender
     {
-        private readonly IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
-        public SmtpEmailSender(IConfiguration configuration)
+        public GmailSmtpEmailSender(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
         
         public EmailResult TryToSendMail(MailboxAddress @from, MailboxAddress to, string subject, MimeEntity body)
@@ -28,8 +28,8 @@ namespace designer_website.Services
 
             try
             {
-                client.Connect(Configuration["SmtpConfiguration:SmtpServer"], 465, true);
-                client.Authenticate(Configuration["SmtpConfiguration:SmtpUser"], Configuration["SmtpConfiguration:SmtpPassword"]);
+                client.Connect(_configuration["SmtpConfiguration:SmtpServer"], 465, true);
+                client.Authenticate(_configuration["SmtpConfiguration:SmtpUser"], _configuration["SmtpConfiguration:SmtpPassword"]);
                 client.Send(message);
                 client.Disconnect(true);
                 client.Dispose();
