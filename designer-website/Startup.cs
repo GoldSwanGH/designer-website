@@ -39,6 +39,7 @@ namespace designer_website
                 });
 
             services.AddTransient<ISmtpEmailSender, GmailSmtpEmailSender>();
+            services.AddTransient<ITokenizer, Sha256Tokenizer>();
             
             services.AddControllersWithViews(options =>
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
