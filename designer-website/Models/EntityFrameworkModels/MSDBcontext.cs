@@ -157,6 +157,10 @@ namespace designer_website.Models.EntityFrameworkModels
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Token)
+                    .HasMaxLength(70)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
