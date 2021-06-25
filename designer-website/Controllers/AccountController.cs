@@ -96,8 +96,8 @@ namespace designer_website.Controllers
 
                 var to = new MailboxAddress(user.FirstName, user.Email);
                 var bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы подтвердить регистрацию:</p><br /><a>" +
-                                       url + "</a>";
+                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы подтвердить регистрацию:</p><br /><a href=\"" 
+                                       + url + "\">" + url + "</a>";
                 bodyBuilder.TextBody = "Пройдите по ссылке, чтобы подтвердить регистрацию:\n" + url;
             
                 var sendEmail = _emailSender.TryToSendMail(to, "Подтверждение регистрации", bodyBuilder.ToMessageBody());
