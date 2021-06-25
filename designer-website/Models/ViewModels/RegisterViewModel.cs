@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using designer_website.Attributes;
+using designer_website.Models.EntityFrameworkModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using BC = BCrypt.Net.BCrypt;
@@ -27,12 +28,13 @@ namespace designer_website.Models
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Password")]
+        [StringLength(50, MinimumLength = 8, ErrorMessage = "Длина пароля должна быть от 8 до 50 символов")]
         public override string Password { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
         [DisplayName("Confirm password")]
-        [ConfirmPassword]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public override string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Это обязательное поле.")]

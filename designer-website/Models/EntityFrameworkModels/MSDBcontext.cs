@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace designer_website.Models
+namespace designer_website.Models.EntityFrameworkModels
 {
     public partial class MSDBcontext : DbContext
     {
@@ -155,6 +155,10 @@ namespace designer_website.Models
                 entity.Property(e => e.Tel)
                     .IsRequired()
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Token)
+                    .HasMaxLength(70)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Role)

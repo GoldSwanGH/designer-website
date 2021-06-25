@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace designer_website.Models
+namespace designer_website.Models.EntityFrameworkModels
 {
     public partial class Service
     {

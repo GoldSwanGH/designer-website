@@ -1,16 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using designer_website.Filters;
+using designer_website.Interfaces;
 using designer_website.Models;
+using designer_website.Models.EntityFrameworkModels;
+using MailKit.Net.Imap;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MimeKit;
+using Org.BouncyCastle.Crypto.Digests;
 using BC = BCrypt.Net.BCrypt;
 
 namespace designer_website.Controllers
@@ -19,18 +29,29 @@ namespace designer_website.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly MSDBcontext _dbcontext;
+        private readonly ISmtpEmailSender _emailSender;
+        private readonly ITokenizer _tokenizer;
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AccountController(MSDBcontext dbcontext, ILogger<AccountController> logger)
+        public AccountController(MSDBcontext dbcontext, ILogger<AccountController> logger, ISmtpEmailSender emailSender,
+            ITokenizer tokenizer, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             this._dbcontext = dbcontext;
             this._logger = logger;
+            this._emailSender = emailSender;
+            this._tokenizer = tokenizer;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
+        
         [HttpGet]
         [AnonymousOnlyFilter]
         public IActionResult Register()
         {
             return View();
         }
+        
         [HttpPost]
         [AnonymousOnlyFilter]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
@@ -40,7 +61,6 @@ namespace designer_website.Controllers
             {
                 User user = registerViewModel.ToUser();
                 Role userRole = await _dbcontext.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
-                _dbcontext.Users.Add(user);
 
                 if (userRole != null)
                 {
@@ -51,14 +71,83 @@ namespace designer_website.Controllers
                     return View(registerViewModel);
                 }
 
+                return RedirectToAction("EmailConfirmation", user);
+                
+                /*
+                _dbcontext.Users.Add(user);
                 await _dbcontext.SaveChangesAsync();
 
                 await Authenticate(user);
                 
-                return RedirectToAction("UserCreated");
+                return RedirectToAction("UserCreated"); */
             }   
             
             return View(registerViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
+        }
+        
+        public IActionResult EmailConfirmation(User user)
+        {
+            User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == user.Email);
+            if (sameUser == null)
+            {
+                string token = _tokenizer.GetRandomToken();
+                string url = "https://localhost:44357/Account/EmailConfirmation/" + token;
+                user.Token = token;
+
+                var to = new MailboxAddress(user.FirstName, user.Email);
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы подтвердить регистрацию:</p><br /><a>" +
+                                       url + "</a>";
+                bodyBuilder.TextBody = "Пройдите по ссылке, чтобы подтвердить регистрацию:\n" + url;
+            
+                var sendEmail = _emailSender.TryToSendMail(to, "Подтверждение регистрации", bodyBuilder.ToMessageBody());
+
+                if (sendEmail == EmailResult.SendSuccess)
+                {
+                    if (user.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer"))
+                    {
+                        ViewData["Text"] = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
+                                           "отправлено на почту дизайнера.";
+                    }
+                    else
+                    {
+                        ViewData["Text"] = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
+                                           "пройдите по ссылке из письма, которое мы отправили Вам на почту.";
+                    }
+                    
+                    _dbcontext.Users.Add(user);
+                    _dbcontext.SaveChanges();
+                }
+                else
+                {
+                    ViewData["Text"] = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
+                                       "и попробуйте пройти регистрацию еще раз.";
+                }
+            }
+            else
+            {
+                ViewData["Text"] = "Ошибка при отправке письма.";
+            }
+            return View();
+        }
+        
+        [Route("Account/EmailConfirmation/{token}")]
+        public async Task<IActionResult> EmailConfirmation(string token)
+        {
+            var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Token == token);
+            
+            if (user != null)
+            {
+                user.Token = null;
+                user.EmailConfirmed = true;
+                await _dbcontext.SaveChangesAsync();
+                
+                return RedirectToAction("UserCreated");
+            }
+            
+            ViewData["Text"] = "Ошибка. Скорее всего, Ваша ссылка нерабочая. Попробуйте зарегистрироваться снова.";
+            
+            return View();
         }
         
         [HttpGet]
@@ -78,6 +167,11 @@ namespace designer_website.Controllers
                     .Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == userViewModel.Email);
                 if (user != null && BC.Verify(userViewModel.Password, user.Password))
                 {
+                    if (!user.EmailConfirmed)
+                    {
+                        ModelState.AddModelError("", "Ваша учетная запись еще не была активирована.");
+                        return View();
+                    }
                     await Authenticate(user);
  
                     return RedirectToAction("Index", "Home");
@@ -94,16 +188,7 @@ namespace designer_website.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-
-        public IActionResult EmailConfirmation()
-        {
-            /* Сделать настраиваемый текст и ссылку, чтобы использовать эту страницу как для подтверждения регистрации,
-               так и для смены пароля */
-            ViewData["Text"] = "Check your email and follow the link to continue.";
-            return View();
-        }
-
-        [Authorize]
+        
         public IActionResult UserCreated()
         {
             return View();

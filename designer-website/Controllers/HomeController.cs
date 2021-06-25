@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using designer_website.Models;
+using designer_website.Models.EntityFrameworkModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace designer_website.Controllers
@@ -19,7 +20,7 @@ namespace designer_website.Controllers
         {
             _logger = logger;
         }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -32,6 +33,12 @@ namespace designer_website.Controllers
         
         [Authorize(Roles = "Admin")]
         public IActionResult About()
+        {
+            return View();
+        }
+        
+        [Route("AccessDenied")]
+        public IActionResult AccessDenied()
         {
             return View();
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace designer_website.Models
+namespace designer_website.Models.EntityFrameworkModels
 {
     public partial class User
     {
@@ -21,6 +21,8 @@ namespace designer_website.Models
         public string Password { get; set; }
         public string Tel { get; set; }
         public int RoleId { get; set; }
+        public bool EmailConfirmed { get; set; }
+        public string Token { get; set; }
 
         public virtual Role Role { get; set; }
         public virtual ICollection<DesignerOrderInfoId> DesignerOrderInfoIds { get; set; }

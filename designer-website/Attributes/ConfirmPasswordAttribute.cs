@@ -3,6 +3,7 @@ using designer_website.Models;
 
 namespace designer_website.Attributes
 {
+    // Был заменен на готовый атрибут валидации Compare
     public class ConfirmPasswordAttribute : ValidationAttribute//, IClientModelValidator
     {
         private string GetErrorMessage() => "Пароли не совпадают.";
