@@ -11,6 +11,6 @@ namespace designer_website.Interfaces
     }
     public interface ISmtpEmailSender
     {
-        public EmailResult TryToSendMail(MailboxAddress from, MailboxAddress to, string subject, MimeEntity body);
+        public EmailResult TryToSendMail(MailboxAddress to, string subject, MimeEntity body);
     }
 }

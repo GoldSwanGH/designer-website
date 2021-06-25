@@ -15,9 +15,11 @@ namespace designer_website.Services
             _configuration = configuration;
         }
         
-        public EmailResult TryToSendMail(MailboxAddress @from, MailboxAddress to, string subject, MimeEntity body)
+        public EmailResult TryToSendMail(MailboxAddress to, string subject, MimeEntity body)
         {
             MimeMessage message = new MimeMessage();
+            
+            var from = new MailboxAddress("noreply", _configuration["SmtpConfiguration:SmtpUser"]);
             
             message.From.Add(from);
             message.To.Add(to);
@@ -38,7 +40,7 @@ namespace designer_website.Services
             {
                 return EmailResult.SendFail;
             }
-
+            
             return EmailResult.SendSuccess;
         }
     }
