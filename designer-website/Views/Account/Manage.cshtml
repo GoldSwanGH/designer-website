@@ -3,27 +3,49 @@
 }
 @using static BCrypt.Net.BCrypt
 @using BCrypt.Net
-@model LoginViewModel;
+@model UserViewModel;
+
 
 <div class="text-center">
     <h1 class="display-4">Manage your account</h1>
+    @using (Html.BeginForm("Recovery", "Account", FormMethod.Post))
+    {
+        {
+            Model.Email = User.Identity.Name;
+        }
+        <input type="submit" value="Изменить пароль"/>
+    }
+    
     @using (Html.BeginForm("Manage", "Account", FormMethod.Post))
     {
         <div class="validation" asp-validation-summary="ModelOnly"></div>
 
-        @Html.LabelFor(m => m.Password)
+        @Html.LabelFor(m => m.Email)
         <br />
-        @Html.EditorFor(m => m.Password)
-        @Html.ValidationMessageFor(m => m.Password)
+        @Html.DisplayFor(m => m.Email)
+        @Html.HiddenFor(m => m.Email)
+        <br /><br />
+        
+        @Html.LabelFor(m => m.FirstName)
+        <br />
+        @Html.EditorFor(m => m.FirstName)
+        @Html.ValidationMessageFor(m => m.FirstName)
         <br /><br />
               
-        @Html.LabelFor(m => m.ConfirmPassword)
+        @Html.LabelFor(m => m.LastName)
         <br />
-        @Html.EditorFor(m => m.ConfirmPassword)
-        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        @Html.EditorFor(m => m.LastName)
+        @Html.ValidationMessageFor(m => m.LastName)
         <br /><br />
+        
+        @Html.LabelFor(m => m.Tel)
+        <br />
+        @Html.EditorFor(m => m.Tel)
+        @Html.ValidationMessageFor(m => m.Tel)
+        <br /><br />
+        
 
-        <input type="submit" value="Sign In"/>
+        <input type="submit" value="Сохранить"/>
 
     }
 </div>
