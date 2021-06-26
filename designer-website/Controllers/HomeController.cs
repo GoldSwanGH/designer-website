@@ -31,10 +31,9 @@ namespace designer_website.Controllers
             return View();
         }
         
-        [Authorize(Roles = "Admin")]
         public IActionResult About()
         {
-            return View();
+            return Redirect("Index#info");
         }
         
         [Route("AccessDenied")]
