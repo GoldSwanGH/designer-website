@@ -25,9 +25,31 @@
 
     <ItemGroup>
       <Content Remove="Views\Auth\CreateUser.cshtml" />
+      <Content Remove="wwwroot\lib\static-pic\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="Models\UserOption.cs" />
+      <Compile Remove="wwwroot\lib\static-pic\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\lib\static-pic\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="wwwroot\lib\static-pic\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\account_box.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\delete.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\edit.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\menu.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\orders.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\person.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\SpecialTitle.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\TitleBack.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\static-pic\icons\works.svg" />
     </ItemGroup>
 </Project>
