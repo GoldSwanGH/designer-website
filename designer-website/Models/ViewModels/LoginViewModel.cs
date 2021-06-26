@@ -16,11 +16,5 @@ namespace designer_website.Models
         [DataType(DataType.Password)]
         [DisplayName("Пароль")]
         public override string Password { get; set; }
-        
-        [Required(ErrorMessage = "Это обязательное поле.")]
-        [DataType(DataType.Password)]
-        [DisplayName("Подтверждение пароля")]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public override string ConfirmPassword { get; set; }
     }
 }

@@ -72,14 +72,6 @@ namespace designer_website.Controllers
                 }
 
                 return RedirectToAction("EmailConfirmation", user);
-                
-                /*
-                _dbcontext.Users.Add(user);
-                await _dbcontext.SaveChangesAsync();
-
-                await Authenticate(user);
-                
-                return RedirectToAction("UserCreated"); */
             }   
             
             return View(registerViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
@@ -157,10 +149,9 @@ namespace designer_website.Controllers
             ViewData["Post"] = false;
             return View();
         }
-        
-        [AnonymousOnlyFilter]
+
         [HttpPost]
-        public IActionResult Recovery(RecoveryViewModel recoveryViewModel)
+        public IActionResult Recovery(UserViewModel recoveryViewModel)
         {
             ViewData["Post"] = true;
             User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == recoveryViewModel.Email);
@@ -171,11 +162,11 @@ namespace designer_website.Controllers
 
                 var to = new MailboxAddress(sameUser.FirstName, sameUser.Email);
                 var bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы восстановить пароль:</p><br /><a href=\"" 
+                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы изменить пароль:</p><br /><a href=\"" 
                                        + url + "\">" + url + "</a>";
-                bodyBuilder.TextBody = "Пройдите по ссылке, чтобы восстановить пароль:\n" + url;
+                bodyBuilder.TextBody = "Пройдите по ссылке, чтобы изменить пароль:\n" + url;
             
-                var sendEmail = _emailSender.TryToSendMail(to, "Восстановление пароля", bodyBuilder.ToMessageBody());
+                var sendEmail = _emailSender.TryToSendMail(to, "Изменение пароля", bodyBuilder.ToMessageBody());
 
                 if (sendEmail == EmailResult.SendSuccess)
                 {
@@ -275,10 +266,50 @@ namespace designer_website.Controllers
             return View();
         }
         
+        [HttpGet]
         [Authorize]
         public IActionResult Manage()
         {
-            return View();
+            User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+
+            if (user != null)
+            {
+                var model = new UserViewModel
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Tel = user.Tel
+                };
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public IActionResult Manage(UserViewModel model)
+        {
+            User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+
+            if (user != null)
+            {
+                if (model.FirstName != user.FirstName)
+                {
+                    user.FirstName = model.FirstName;
+                }
+                if (model.LastName != user.LastName)
+                {
+                    user.LastName = model.LastName;
+                }
+                if (model.Tel != user.Tel)
+                {
+                    user.Tel = model.Tel;
+                }
+            }
+
+            return View(model);
         }
         
         [Authorize]
@@ -290,6 +321,21 @@ namespace designer_website.Controllers
         public IActionResult Works()
         {
             return View();
+        }
+        
+        private async Task Authenticate(User user)
+        {
+            // создаем claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.RoleName)
+            };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         /* Default admin account
@@ -330,20 +376,5 @@ namespace designer_website.Controllers
             return RedirectToAction("Index", "Home");
         }
         */
-        
-        private async Task Authenticate(User user)
-        {
-            // создаем claims
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.RoleName)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }
     }
 }
