@@ -37,10 +37,10 @@ namespace designer_website.Controllers
         public AccountController(MSDBcontext dbcontext, ILogger<AccountController> logger, ISmtpEmailSender emailSender,
             ITokenizer tokenizer, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            this._dbcontext = dbcontext;
-            this._logger = logger;
-            this._emailSender = emailSender;
-            this._tokenizer = tokenizer;
+            _dbcontext = dbcontext;
+            _logger = logger;
+            _emailSender = emailSender;
+            _tokenizer = tokenizer;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
