@@ -96,8 +96,8 @@ namespace designer_website.Controllers
 
                 var to = new MailboxAddress(user.FirstName, user.Email);
                 var bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы подтвердить регистрацию:</p><br /><a>" +
-                                       url + "</a>";
+                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы подтвердить регистрацию:</p><br /><a href=\"" 
+                                       + url + "\">" + url + "</a>";
                 bodyBuilder.TextBody = "Пройдите по ссылке, чтобы подтвердить регистрацию:\n" + url;
             
                 var sendEmail = _emailSender.TryToSendMail(to, "Подтверждение регистрации", bodyBuilder.ToMessageBody());
@@ -150,6 +150,87 @@ namespace designer_website.Controllers
             return View();
         }
         
+        [HttpGet]
+        [AnonymousOnlyFilter]
+        public IActionResult Recovery()
+        {
+            ViewData["Post"] = false;
+            return View();
+        }
+        
+        [AnonymousOnlyFilter]
+        [HttpPost]
+        public IActionResult Recovery(RecoveryViewModel recoveryViewModel)
+        {
+            ViewData["Post"] = true;
+            User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == recoveryViewModel.Email);
+            if (sameUser != null)
+            {
+                string token = _tokenizer.GetRandomToken();
+                string url = "https://localhost:44357/Account/PasswordChange/" + token;
+
+                var to = new MailboxAddress(sameUser.FirstName, sameUser.Email);
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы восстановить пароль:</p><br /><a href=\"" 
+                                       + url + "\">" + url + "</a>";
+                bodyBuilder.TextBody = "Пройдите по ссылке, чтобы восстановить пароль:\n" + url;
+            
+                var sendEmail = _emailSender.TryToSendMail(to, "Восстановление пароля", bodyBuilder.ToMessageBody());
+
+                if (sendEmail == EmailResult.SendSuccess)
+                {
+                    sameUser.Token = token;
+                    _dbcontext.SaveChanges();
+                }
+            }
+            return View();
+        }
+        
+        [HttpGet]
+        [Route("Account/PasswordChange/{token}")]
+        [AnonymousOnlyFilter]
+        public IActionResult PasswordChange(string token)
+        {
+            var user = _dbcontext.Users.FirstOrDefault(u => u.Token == token);
+            
+            if (user == null)
+            {
+                ViewData["Post"] = true;
+                ViewData["Text"] = "Ошибка. Неверная ссылка.";
+            }
+            else
+            {
+                ViewData["Post"] = false;
+                
+                user.Token = null;
+                _dbcontext.SaveChanges();
+            }
+
+            var passwordChangeViewModel = new PasswordChangeViewModel();
+            passwordChangeViewModel.Email = user.Email;
+            
+            return View(passwordChangeViewModel);
+        }
+        
+        [HttpPost]
+        public IActionResult PasswordChange(PasswordChangeViewModel passwordChangeViewModel)
+        {
+            var user = _dbcontext.Users.FirstOrDefault(u => u.Email == passwordChangeViewModel.Email);
+            ViewData["Post"] = true;
+            if (user != null)
+            {
+                user.Password = BC.HashPassword(passwordChangeViewModel.Password);
+                _dbcontext.SaveChanges();
+                
+                ViewData["Text"] = "Пароль успешно сменен. Пожалуйста, войдите в учетную запись с новым паролем.";
+            }
+            else
+            {
+                ViewData["Text"] = "Ошибка. Пользователь не найден";
+            }
+            return View();
+        }
+
         [HttpGet]
         [AnonymousOnlyFilter]
         public IActionResult Login()
@@ -206,7 +287,6 @@ namespace designer_website.Controllers
             return View();
         }
         
-        [Authorize(Roles = "Designer")]
         public IActionResult Works()
         {
             return View();

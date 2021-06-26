@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Password recovery";
+}
+@using Org.BouncyCastle.Asn1.Ocsp
+@model RecoveryViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Recovery</h1>
+    @if ((bool)ViewData["Post"])
+    {
+        <p>Письмо с дальнейшими инструкциями было выслано на Вашу почту.</p>
+    }
+    else
+    {
+        <p>Введите Email вашего аккаунта</p>
+        @using (Html.BeginForm("Recovery", "Account", FormMethod.Post))
+        {
+            @Html.LabelFor(m => m.Email)
+            <br />
+            @Html.EditorFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email)
+            <br /><br />
+                  
+            <input type="submit" value="Проверить"/>
+        }
+    }
+</div>
