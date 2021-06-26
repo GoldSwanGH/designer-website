@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
-using designer_website.Models;
-using designer_website.Models.EntityFrameworkModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace designer_website.Controllers
@@ -33,10 +31,10 @@ namespace designer_website.Controllers
             
             return View(model);
         }
-        
-        public IActionResult Author(UserViewModel value)
+
+        public IActionResult Author(UserViewModel model)
         {
-            return View(value);
+            return View(model);
         }
     }
 }
