@@ -7,28 +7,28 @@ namespace designer_website.Models
     public class UserViewModel
     {
         [DataType(DataType.Text)]
-        [DisplayName("First name")]
+        [DisplayName("Имя")]
         public virtual string FirstName { get; set; }
         
         [DataType(DataType.Text)]
-        [DisplayName("Last name")]
+        [DisplayName("Фамилия")]
         public virtual string LastName { get; set; }
         
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
-        [DisplayName("Email address")]
+        [DisplayName("Почта")]
         public virtual string Email { get; set; }
         
         [DataType(DataType.Password)]
-        [DisplayName("Password")]
+        [DisplayName("Пароль")]
         public virtual string Password { get; set; }
         
         [DataType(DataType.Password)]
-        [DisplayName("Confirm password")]
+        [DisplayName("Подтверждение пароля")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public virtual string ConfirmPassword { get; set; }
         
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
-        [DisplayName("Phone number")]
+        [DisplayName("Телефон")]
         public virtual string Tel { get; set; }
     }
 }
