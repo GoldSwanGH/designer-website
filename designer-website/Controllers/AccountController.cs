@@ -201,9 +201,6 @@ namespace designer_website.Controllers
             else
             {
                 ViewData["Post"] = false;
-                
-                user.Token = null;
-                _dbcontext.SaveChanges();
             }
 
             var passwordChangeViewModel = new PasswordChangeViewModel();
@@ -220,6 +217,7 @@ namespace designer_website.Controllers
             if (user != null)
             {
                 user.Password = BC.HashPassword(passwordChangeViewModel.Password);
+                user.Token = null;
                 _dbcontext.SaveChanges();
                 
                 ViewData["Text"] = "Пароль успешно сменен. Пожалуйста, войдите в учетную запись с новым паролем.";
