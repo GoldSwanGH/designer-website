@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace designer_website.Controllers
@@ -35,6 +36,20 @@ namespace designer_website.Controllers
         public IActionResult Author(UserViewModel model)
         {
             return View(model);
+        }
+        
+        [Authorize]
+        [HttpGet]
+        public IActionResult CreateOrder()
+        {
+            return View();
+        }
+        
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateOrder(OrderViewModel model)
+        {
+            return View();
         }
     }
 }
