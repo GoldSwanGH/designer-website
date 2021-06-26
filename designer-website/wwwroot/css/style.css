@@ -79,7 +79,11 @@ html, body, main {
 .icon_size_normal {
     width: 24px;
     height: 24px;
-    fill: none;
+}
+
+.icon_size_large {
+    width: 50px;
+    height: 50px
 }
 
 .icon_color_primary path{
@@ -106,6 +110,12 @@ html, body, main {
 .icon_color_secondary:hover path{
     fill: var(--primary-color);
     transition: 0.5s all ease-in-out;
+}
+
+.icon_transition_down:hover {
+    background-color: transparent;
+    transform: translateY(-20px);
+    transition: 1s all ease-in-out;
 }
 
 .link_clean {
@@ -657,4 +667,20 @@ html, body, main {
 
 .mxw-100 {
     max-width: 100%;
+}
+
+.offset-alert {
+    left: 100%;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-center {
+    text-align: center !important;
 }
