@@ -1,4 +1,5 @@
-﻿@model UserCollectionViewModel
+﻿@using designer_website.Models.ViewModels
+@model UserCollectionViewModel
 
 @{
     ViewData["Title"] = "Авторы";
@@ -9,7 +10,7 @@
     <span class="block_margin-top_normal block_align_center text_size_title block_font-limit_title">Авторы</span>
     <div class="search block_align_center block_margin-top_normal">
         <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" onkeyup="searchFunction(this)">
             <button class="btn btn-outline-primary" type="submit">Найти</button>
         </form>
     </div>
@@ -18,10 +19,9 @@
             foreach (var author in Model.Users)
             {
                 <div class="author__item script_animate element_hover_transform element_hover_primary-shadow block_position_relative block_justify_center block_flex_column justify-content-end align-items-center element_shadow_smooth element_border-radius_smooth">
-                    @* <form action="@Url.Action("Author", "Essential", new {value = author.LastName})"><button type="submit" class="button button-overlay block_position_absolute"></button></form> *@
                     @Html.ActionLink("", "Author", author, new {@class="button button-overlay block_position_absolute"})
                     <img src="~/static-pic/photos/author.jpg" alt="Нет Изображения" class="img img_stretch element_border-radius_top">
-                    <span class="author__title element_border-radius_smooth element_border-radius_bottom site_theme_reversed">@(author.LastName + " " + author.FirstName)</span>
+                    <span class="contentSearchTitle author__title element_border-radius_smooth element_border-radius_bottom site_theme_reversed">@(author.User.LastName + " " + author.User.FirstName)</span>
                 </div>
             }
         }
