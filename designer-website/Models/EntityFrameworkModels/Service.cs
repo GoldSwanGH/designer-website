@@ -14,6 +14,8 @@ namespace designer_website.Models.EntityFrameworkModels
 
         public int ServiceId { get; set; }
         public string ServiceName { get; set; }
+        public int? DefaultPrice { get; set; }
+        public string ServiceDescription { get; set; }
 
         public virtual ICollection<OrderInfo> OrderInfos { get; set; }
     }
