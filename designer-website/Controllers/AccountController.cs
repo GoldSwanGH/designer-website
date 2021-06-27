@@ -9,6 +9,7 @@ using designer_website.Filters;
 using designer_website.Interfaces;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
+using designer_website.Models.ViewModels;
 using MailKit.Net.Imap;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -359,9 +360,42 @@ namespace designer_website.Controllers
         
         [Authorize]
         [HttpGet]
-        public IActionResult NewOrder()
+        public IActionResult NewOrder(NewOrderInitialModel initialModel)
         {
             var model = new OrderViewModel();
+
+            if (initialModel.ServiceId != null)
+            {
+                model.ChosenService = _dbcontext.Services.FirstOrDefault(s => s.ServiceId == initialModel.ServiceId);
+            }
+
+            if (initialModel.Designers != null)
+            {
+                try
+                {
+                    var chosenDesigners = new List<UserViewModel>();
+                    foreach (var designer in model.ChosenDesigners)
+                    {
+                        var user = _dbcontext.Users.FirstOrDefault(u => u.Email == designer.Email);
+                        if (user == null)
+                        {
+                            throw new Exception();
+                        }
+
+                        chosenDesigners.Add(new UserViewModel
+                        {
+                            Email = user.Email,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            Tel = user.Tel
+                        });
+                    }
+                }
+                catch
+                {
+                    
+                }
+            }
 
             var designers = _dbcontext.Users.Where(
                 u => u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
@@ -378,7 +412,7 @@ namespace designer_website.Controllers
                 } );
             }
 
-            model.Designers = designersModels;
+            model.AllDesigners = designersModels;
 
             model.Services = _dbcontext.Services.ToList();
             
@@ -402,7 +436,7 @@ namespace designer_website.Controllers
                     throw new Exception();
                 }
 
-                foreach (var designer in model.Designers)
+                foreach (var designer in model.ChosenDesigners)
                 {
                     var user = _dbcontext.Users.FirstOrDefault(u => u.Email == designer.Email);
                     if (user == null)
