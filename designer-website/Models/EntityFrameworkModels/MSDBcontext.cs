@@ -203,7 +203,11 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.Property(e => e.Description)
                     .IsRequired()
-                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.WorkName)
+                    .IsRequired()
+                    .HasMaxLength(200)
                     .IsUnicode(false);
             });
 
