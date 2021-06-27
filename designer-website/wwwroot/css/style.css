@@ -77,8 +77,8 @@ html, body, main {
 }
 
 .icon_size_normal {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
 }
 
 .icon_size_large {
@@ -684,3 +684,13 @@ html, body, main {
 .text-center {
     text-align: center !important;
 }
+
+@media all and (min-width: 992px) {
+    .header__item-content .dropdown-menu {
+        right: 0;
+        display: none; 
+    }
+    .header__item-content:hover .dropdown-menu {display: block;}
+}
+
+.header__item-content .dropdown-menu .dropdown-item:hover {color: var(--primary-color);}
