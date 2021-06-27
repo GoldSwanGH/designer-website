@@ -11,7 +11,9 @@ namespace designer_website.Models
         
         public Service ChosenService { get; set; }
         
-        public List<UserViewModel> Designers { get; set; }
+        public List<UserViewModel> ChosenDesigners { get; set; }
+        
+        public List<UserViewModel> AllDesigners { get; set; }
         
         public string Description { get; set; }
     }
