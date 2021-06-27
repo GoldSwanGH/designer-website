@@ -106,12 +106,15 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.HasData(new Role
                 {
+                    RoleId = 1,
                     RoleName = "Admin"
                 }, new Role
                 {
+                    RoleId = 2,
                     RoleName = "Designer"
                 }, new Role
                 {   
+                    RoleId = 3,
                     RoleName = "User"
                 });
             });
@@ -186,6 +189,7 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.HasData(new User
                 {
+                    UserId = 1,
                     Email = "admin@gg",
                     FirstName = "admin",
                     Password = BCrypt.Net.BCrypt.HashPassword("admin12345"),
@@ -193,6 +197,7 @@ namespace designer_website.Models.EntityFrameworkModels
                     Tel = "1"
                 }, new User
                 {
+                    UserId = 2,
                     Email = "designer@gg",
                     FirstName = "designer",
                     Password = BCrypt.Net.BCrypt.HashPassword("designer12345"),
