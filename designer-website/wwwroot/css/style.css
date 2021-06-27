@@ -620,6 +620,10 @@ html, body, main {
     color: inherit;
 }
 
+.form-control:disabled {
+    color: var(--primary-color-normal);
+}
+
 .form-control-active::placeholder {
     opacity: 1;
     color: inherit;
