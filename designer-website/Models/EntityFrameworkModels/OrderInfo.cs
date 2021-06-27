@@ -17,6 +17,7 @@ namespace designer_website.Models.EntityFrameworkModels
         public DateTime Date { get; set; }
         public int? ServiceId { get; set; }
         public string OrderDescription { get; set; }
+        public int? Price { get; set; }
 
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

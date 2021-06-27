@@ -103,20 +103,6 @@ namespace designer_website.Models.EntityFrameworkModels
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.HasData(new Role
-                {
-                    RoleId = 1,
-                    RoleName = "Admin"
-                }, new Role
-                {
-                    RoleId = 2,
-                    RoleName = "Designer"
-                }, new Role
-                {   
-                    RoleId = 3,
-                    RoleName = "User"
-                });
             });
 
             modelBuilder.Entity<Service>(entity =>
@@ -128,16 +114,12 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
 
+                entity.Property(e => e.ServiceDescription).IsUnicode(false);
+
                 entity.Property(e => e.ServiceName)
                     .IsRequired()
                     .HasMaxLength(500)
                     .IsUnicode(false);
-
-                entity.HasData(
-                    new Service{ ServiceId = 1, ServiceName = "Макет сайта" },
-                    new Service{ ServiceId = 2, ServiceName = "Логотип" },
-                    new Service{ ServiceId = 3, ServiceName = "Фирменный стиль" },
-                    new Service{ ServiceId = 4, ServiceName = "Баннер" });
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -186,24 +168,6 @@ namespace designer_website.Models.EntityFrameworkModels
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_Role");
-
-                entity.HasData(new User
-                {
-                    UserId = 1,
-                    Email = "admin@gg",
-                    FirstName = "admin",
-                    Password = BCrypt.Net.BCrypt.HashPassword("admin12345"),
-                    RoleId = 1,
-                    Tel = "1"
-                }, new User
-                {
-                    UserId = 2,
-                    Email = "designer@gg",
-                    FirstName = "designer",
-                    Password = BCrypt.Net.BCrypt.HashPassword("designer12345"),
-                    RoleId = 2,
-                    Tel = "2"
-                });
             });
 
             modelBuilder.Entity<UserWork>(entity =>
