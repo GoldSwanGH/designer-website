@@ -1,12 +1,12 @@
-var menuCall = document.getElementsByClassName("menu_expand");
-var i;
-
-for (i = 0; i < menuCall.length; i++) {
-    menuCall[i].addEventListener("click", function () {
-        document.getElementsByClassName("main__menu").item(0).classList.toggle("block_visibility_active");
-        document.getElementsByClassName("main__menu").item(0).classList.toggle("block_margin-top_normal");
-    });
-}
+// var menuCall = document.getElementsByClassName("menu_expand");
+// var i;
+//
+// for (i = 0; i < menuCall.length; i++) {
+//     menuCall[i].addEventListener("click", function () {
+//         document.getElementsByClassName("main__menu").item(0).classList.toggle("block_visibility_active");
+//         document.getElementsByClassName("main__menu").item(0).classList.toggle("block_margin-top_normal");
+//     });
+// }
 
 var anchors = [];
 var currentAnchor = -1;
