@@ -199,11 +199,11 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.Property(e => e.WorkId).HasColumnName("WorkID");
 
-                entity.Property(e => e.Date).HasColumnType("date");
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(CONVERT([date],getdate()))");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
 
                 entity.Property(e => e.WorkName)
                     .IsRequired()
