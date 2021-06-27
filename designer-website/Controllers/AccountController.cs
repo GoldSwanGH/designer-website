@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -71,15 +72,18 @@ namespace designer_website.Controllers
                     return View(registerViewModel);
                 }
 
-                return RedirectToAction("EmailConfirmation", user);
+                return RedirectToAction("SendConfirmationLetter", user);
             }   
             
             return View(registerViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
-        
-        public IActionResult EmailConfirmation(User user)
+
+        public IActionResult SendConfirmationLetter(User user)
         {
             User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == user.Email);
+            
+            int responceId;
+            
             if (sameUser == null)
             {
                 string token = _tokenizer.GetRandomToken();
@@ -98,13 +102,15 @@ namespace designer_website.Controllers
                 {
                     if (user.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer"))
                     {
-                        ViewData["Text"] = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
-                                           "отправлено на почту дизайнера.";
+                        responceId = 1;
+                        //text = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
+                                           //"отправлено на почту дизайнера.";
                     }
                     else
                     {
-                        ViewData["Text"] = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
-                                           "пройдите по ссылке из письма, которое мы отправили Вам на почту.";
+                        responceId = 2;
+                        //text = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
+                                           //"пройдите по ссылке из письма, которое мы отправили Вам на почту.";
                     }
                     
                     _dbcontext.Users.Add(user);
@@ -112,14 +118,42 @@ namespace designer_website.Controllers
                 }
                 else
                 {
-                    ViewData["Text"] = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
-                                       "и попробуйте пройти регистрацию еще раз.";
+                    responceId = 3;
+                    //text = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
+                                       //"и попробуйте пройти регистрацию еще раз.";
                 }
             }
             else
             {
-                ViewData["Text"] = "Ошибка при отправке письма.";
+                responceId = 4;
+                //text = "Ошибка при отправке письма.";
             }
+            
+            return RedirectToAction("EmailConfirmation", "Account", new { id = responceId});
+        }
+        
+        [Route("Account/EmailConfirmation/{responseId:int}")]
+        public IActionResult EmailConfirmation(int responseId)
+        {
+            switch (responseId)
+            {
+                case 1:
+                    ViewData["Text"] = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
+                                        "отправлено на почту дизайнера.";
+                    break;
+                case 2:
+                    ViewData["Text"] = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
+                                        "пройдите по ссылке из письма, которое мы отправили Вам на почту.";
+                    break;
+                case 3:
+                    ViewData["Text"] = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
+                                        "и попробуйте пройти регистрацию еще раз.";
+                    break;
+                default:
+                    ViewData["Text"] = "Ошибка при отправке письма.";
+                    break;
+            }
+        
             return View();
         }
         
