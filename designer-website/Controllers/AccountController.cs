@@ -270,54 +270,6 @@ namespace designer_website.Controllers
         
         [HttpGet]
         [Authorize]
-        public IActionResult Manage()
-        {
-            User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-
-            if (user != null)
-            {
-                var model = new UserViewModel
-                {
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Tel = user.Tel
-                };
-                return View(model);
-            }
-
-            return RedirectToAction("Index", "Home");
-        }
-        
-        [HttpPost]
-        [Authorize]
-        public IActionResult Manage(UserViewModel model)
-        {
-            User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-
-            if (user != null)
-            {
-                if (model.FirstName != user.FirstName)
-                {
-                    user.FirstName = model.FirstName;
-                }
-                if (model.LastName != user.LastName)
-                {
-                    user.LastName = model.LastName;
-                }
-                if (model.Tel != user.Tel)
-                {
-                    user.Tel = model.Tel;
-                }
-
-                _dbcontext.SaveChanges();
-            }
-
-            return View(model);
-        }
-        
-        [HttpGet]
-        [Authorize]
         public IActionResult Profile()
         {
             User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
@@ -333,6 +285,7 @@ namespace designer_website.Controllers
                 };
                 return View(model);
             }
+
             return RedirectToAction("Index", "Home");
         }
         
@@ -356,11 +309,11 @@ namespace designer_website.Controllers
                 {
                     user.Tel = model.Tel;
                 }
-                
+
                 _dbcontext.SaveChanges();
             }
-            
-            return View();
+
+            return View(model);
         }
 
         [Authorize]
