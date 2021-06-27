@@ -321,6 +321,11 @@ namespace designer_website.Controllers
         {
             return View();
         }
+
+        public IActionResult NewOrder()
+        {
+            return View();
+        }
         
         public IActionResult Works()
         {

@@ -27,16 +27,18 @@
         </div>
     </div>
     <div id="userInfoBlock" class="main__content text-center w-100 block_margin_none align-items-center block_scroll_enable block_scrollbar_hide block_visibility_hidden block_visibility_active">
-        @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new {@class="container"}))
+        @using (Html.BeginForm("Recovery", "Account", FormMethod.Post, new {@class="container"}))
+        {
+            {Model.Email = User.Identity.Name;}
+            <input type="submit" value="Изменить пароль" class="btn btn-fill-secondary block_align_center mt-3 mb-3 hidden"/>
+        }
+        
+        @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new {id="infoForm", @class="container"}))
             {
                 <div class="validation invalid-feedback block_padding_low visible" asp-validation-summary="ModelOnly"></div>
                 @Html.DisplayFor(m => m.Email)
                 @Html.HiddenFor(m => m.Email)
-                @using (Html.BeginForm("Recovery", "Account", FormMethod.Post, new {@class="container"}))
-                {
-                    {Model.Email = User.Identity.Name;}
-                    <input type="submit" value="Изменить пароль" class="btn btn-fill-secondary block_align_center mt-3 mb-3 hidden"/>
-                }
+                
                 <div class="block_flex_column align-items-center">
                     <div class="col-md-4 text-left">
                         <label asp-for="FirstName" class="form-label"></label>
@@ -54,15 +56,15 @@
                     </div>
                     <div class="col-md-4 text-left">
                         <label asp-for="Tel" class="form-label"></label>
-                        <input disabled asp-for="Tel" class="user-info form-control site_theme_primary element_border_primary" placeholder="+71112223344">
+                        <input disabled asp-for="Tel" class="user-info form-control site_theme_primary element_border_primary">
                         <div class="invalid-feedback visible">
                             @Html.ValidationMessageFor(m => m.Tel)
                         </div>
                     </div>
                 </div>
                 <div id="controlUserEdit" class="block_margin-top_small block_flex_row block_column-gap_small justify-content-center block_visibility_hidden">
-                    <input type="submit" value="Сохранить" class="btn btn-fill-secondary" onclick="userEdit()"/>
-                    <form action=""><button type="reset" class="btn btn-outline-primary" onclick="userEdit()">Отмена</button></form>
+                    <input form="infoForm" type="submit" value="Сохранить" class="btn btn-fill-secondary"/>
+                    <button form="infoForm" type="reset" class="btn btn-outline-primary" onclick="userEdit()">Отмена</button>
                 </div>
             }
         <button id="editUserInfo" class="btn btn-secondary block_visibility_hidden block_visibility_active" onclick="userEdit()">Редактировать</button>
@@ -101,7 +103,7 @@
             </div>
         </div>
     </div>
-    @if (User.IsInRole("Designer"))
+    @if (User.IsInRole("Designer") || User.IsInRole("Admin"))
     {
         <div id="worksBlock" class="main__content block_margin_none block_flex_column align-items-center block_scroll_enable block_scrollbar_hide block_visibility_hidden block_padding_none">
             <div class="card card-size-small element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
