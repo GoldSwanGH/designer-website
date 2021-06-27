@@ -1,0 +1,157 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+
+<div class="anchor block_flex_column justify-content-start align-items-center">
+    <div class="main__content block_margin-bottom_small w-100 block_flex_column block_margin-top_normal align-items-center">
+        <img class="img img_stretch element_size_normal element_border_circle" src="~/static-pic/photos/author.jpg" alt="нет изображения"> 
+        <div id="profileControls" class="main__content block_margin-top_small block_column-gap_small block_flex_row justify-content-center">
+            <button id="userInfoButton" onclick="changeProfileView(this)" class="btn btn-fill-secondary icon_color_secondary no-hover">
+                <svg class="icon_size_normal" viewBox="0 0 35 35" fill="none">
+                    <path d="M17.5002 17.5C20.7231 17.5 23.3335 14.8896 23.3335 11.6667C23.3335 8.44374 20.7231 5.83333 17.5002 5.83333C14.2772 5.83333 11.6668 8.44374 11.6668 11.6667C11.6668 14.8896 14.2772 17.5 17.5002 17.5ZM17.5002 20.4167C13.6064 20.4167 5.8335 22.3708 5.8335 26.25V29.1667H29.1668V26.25C29.1668 22.3708 21.3939 20.4167 17.5002 20.4167Z" fill="#17202A"/>
+                </svg>
+            </button>
+            <button id="ordersButton" onclick="changeProfileView(this)" class="btn btn-outline-primary icon_color_primary">
+                <svg class="icon_size_normal" viewBox="0 0 35 35" fill="none">
+                    <path d="M29.1665 2.91667H5.83317C4.37484 2.91667 2.9165 4.22917 2.9165 5.83334V10.2229C2.9165 11.2729 3.54359 12.1771 4.37484 12.6875V29.1667C4.37484 30.7708 5.979 32.0833 7.2915 32.0833H27.7082C29.0207 32.0833 30.6248 30.7708 30.6248 29.1667V12.6875C31.4561 12.1771 32.0832 11.2729 32.0832 10.2229V5.83334C32.0832 4.22917 30.6248 2.91667 29.1665 2.91667ZM21.8748 20.4167H13.1248V17.5H21.8748V20.4167ZM29.1665 10.2083H5.83317V5.83334L29.1665 5.80417V10.2083Z" fill="#AED6F1"/>
+                </svg>
+            </button>
+            <button id="worksButton" onclick="changeProfileView(this)" class="btn btn-outline-primary icon_color_primary">
+                <svg class="icon_size_normal" viewBox="0 0 35 35" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.375 4.375V16.0417H16.0417V4.375H4.375ZM13.125 13.125H7.29167V7.29167H13.125V13.125ZM4.375 18.9583V30.625H16.0417V18.9583H4.375ZM13.125 27.7083H7.29167V21.875H13.125V27.7083ZM18.9583 4.375V16.0417H30.625V4.375H18.9583ZM27.7083 13.125H21.875V7.29167H27.7083V13.125ZM18.9583 18.9583V30.625H30.625V18.9583H18.9583ZM27.7083 27.7083H21.875V21.875H27.7083V27.7083Z" fill="#AED6F1"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="userInfoBlock" class="main__content text-center w-100 block_margin_none align-items-center block_scroll_enable block_scrollbar_hide block_visibility_hidden block_visibility_active">
+        @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new {@class="container"}))
+            {
+                <br/>
+                <div class="validation invalid-feedback visible" asp-validation-summary="ModelOnly"></div>
+                <br/>
+                @Html.DisplayFor(m => m.Email)
+                @Html.HiddenFor(m => m.Email)
+                <div class="block_flex_column align-items-center">
+                    <div class="col-md-4 text-left">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input disabled asp-for="FirstName" class="user-info form-control site_theme_primary element_border_primary">
+                        <div class="invalid-feedback visible">
+                            @Html.ValidationMessageFor(m => m.FirstName)
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-left">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input disabled asp-for="LastName" class="user-info form-control site_theme_primary element_border_primary" placeholder="(опционально)">
+                        <div class="invalid-feedback visible">
+                            @Html.ValidationMessageFor(m => m.LastName)
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-left">
+                        <label asp-for="Tel" class="form-label"></label>
+                        <input disabled asp-for="Tel" class="user-info form-control site_theme_primary element_border_primary" placeholder="+71112223344">
+                        <div class="invalid-feedback visible">
+                            @Html.ValidationMessageFor(m => m.Tel)
+                        </div>
+                    </div>
+                </div>
+                <div id="controlUserEdit" class="block_margin-top_small block_flex_row block_column-gap_small justify-content-center block_visibility_hidden">
+                    <button type="submit" class="btn btn-fill-secondary" onclick="userEdit()">Сохранить</button>
+                    <form action=""><button type="reset" class="btn btn-outline-primary" onclick="userEdit()">Отмена</button></form>
+                </div>
+            }
+            @using (Html.BeginForm("Recovery", "Account", FormMethod.Post, new {@class="container"}))
+            {
+                {Model.Email = User.Identity.Name;}
+                <input type="submit" value="Изменить пароль" class="btn btn-fill-secondary block_align_center hidden"/>
+            }
+            <button id="editUserInfo" class="btn btn-secondary block_visibility_hidden block_visibility_active" onclick="userEdit()">Редактировать</button>
+        </div>
+        <div id="ordersBlock" class="main__content w-100 block_margin_none block_flex_column align-items-center block_scroll_enable block_scrollbar_hide block_visibility_hidden block_padding_none">
+            <div class="container block_padding-side_normal">
+                <div class="row text-center site_theme_reversed block_position_relative block_padding_low element_border-radius_smooth">
+                    <span class="col text_theme_bold">Номер заказа</span>
+                    <span class="col">Статус</span>
+                    <span class="col">Имя</span>
+                    <span class="col">Дата</span>
+                    <span class="col">Стоимость</span>
+                    <button type="button" class="button button-overlay block_position_absolute" data-bs-toggle="modal" data-bs-target="#orderID"></button>
+                </div>
+                <div class="modal modal-xl modal-overlay fade" id="orderID" tabindex="-1" aria-labelledby="itemNameLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered card-overlay justify-content-center block_align_center block_zindex_high">
+                        <div class="modal-content align-items-center element_border_none element_background_secondary">
+                            <div class="block_flex_column block_margin-top_normal text-center">
+                                <span class="text_theme_bold block_padding_low">Номер заказа</span>
+                                <span>Статус</span>
+                                <span>Имя</span>
+                                <span>Дата</span>
+                                <span>Стоимость</span>
+                            </div>
+                            <div class="site_theme_reversed block_margin-bottom_small block_margin-top_small block_flex_column justify-content-center">
+                                <p class="description block_padding_normal">
+                                    Небольшой сайт для размещения в сети Интернет. Используется для
+                                    ознакомления пользователей с брендом/лицом/компанией/продукцией.
+                                    Практически не предполагает интерактивности и высокой нагрузки.
+                                </p>
+                            </div>
+                            <div class="card__controls block_position_absolute element_background_primary element_border_controls block_flex_row justify-content-between"></div>
+                            <button class="btn-close block_position_absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="worksBlock" class="main__content block_margin_none block_flex_column align-items-center block_scroll_enable block_scrollbar_hide block_visibility_hidden block_padding_none">
+            <div class="card card-size-small element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
+                <button type="button" class="button button-overlay block_position_absolute block_zindex_normal" data-bs-toggle="modal" data-bs-target="#itemID"></button>
+                <img src="photos/webpic.png" class="card-img element_border-radius_smooth" alt="cardimg">
+                <div class="card-img-overlay card__item block_zindex_low">
+                    <h5 class="card-title element_background_secondary-normal block_padding_normal">Очень крутой дизайн</h5>
+                </div>
+            </div>
+            <div class="modal modal-xl modal-overlay fade" id="itemID" tabindex="-1" aria-labelledby="itemNameLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered card-overlay justify-content-center block_align_center block_zindex_high">
+                    <div class="modal-content align-items-center element_border_none element_background_transparent">
+                        <div id="carouselItemID" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselItemID" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselItemID" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselItemID" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="photos/webpic.png" class="d-block w-100 element_border-radius_smooth" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="photos/webpic.png" class="d-block w-100 element_border-radius_smooth" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="photos/webpic.png" class="d-block w-100 element_border-radius_smooth" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselItemID" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselItemID" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <div class="card-img-overlay card__item">
+                                <h5 class="card-title element_background_secondary-normal block_padding_normal">Очень крутой дизайн</h5>
+                            </div>
+                        </div>
+                        <div class="card__controls block_position_absolute element_background_primary element_border_controls block_flex_row justify-content-between">
+                            <img src="icons/edit.svg" alt="...">
+                            <img src="icons/delete.svg" alt="...">
+                        </div>
+                        <button class="btn-close block_position_absolute" data-bs-dismiss="modal" aria-label="Close"></button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    @* </div> *@
+</div>
