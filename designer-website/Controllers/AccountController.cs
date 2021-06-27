@@ -316,14 +316,85 @@ namespace designer_website.Controllers
             return View(model);
         }
 
+        
         [Authorize]
         public IActionResult Orders()
         {
             return View();
-        }
-
+        } 
+        
+        [Authorize]
+        [HttpGet]
         public IActionResult NewOrder()
         {
+            var model = new OrderViewModel();
+
+            var designers = _dbcontext.Users.Where(
+                u => u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
+            
+            var designersModels = new List<UserViewModel>();
+            foreach (var designer in designers)
+            {
+                designersModels.Add( new UserViewModel
+                {
+                    Email = designer.Email,
+                    FirstName = designer.FirstName,
+                    LastName = designer.LastName,
+                    Tel = designer.Tel
+                } );
+            }
+
+            model.Designers = designersModels;
+
+            model.Services = _dbcontext.Services.ToList();
+            
+            return View(model);
+        }
+        
+        [Authorize]
+        [HttpPost]
+        public IActionResult NewOrder(OrderViewModel model)
+        {
+            OrderInfo order = new OrderInfo();
+
+            List<User> designers = new List<User>();
+
+            try
+            {
+                var client = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+
+                if (client == null)
+                {
+                    throw new Exception();
+                }
+
+                foreach (var designer in model.Designers)
+                {
+                    var user = _dbcontext.Users.FirstOrDefault(u => u.Email == designer.Email);
+                    if (user == null)
+                    {
+                        throw new Exception();
+                    }
+                    designers.Add(user);
+                }
+                
+                foreach (var designer in designers)
+                {
+                    order.DesignerOrderInfoIds.Add(new DesignerOrderInfoId{ User = designer});
+                }
+                
+                order.OrderDescription = model.Description;
+                order.User = client;
+                order.Date = DateTime.Now;
+
+                _dbcontext.OrderInfos.Add(order);
+                _dbcontext.SaveChanges();
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Ошибка добавления заказа.");
+            }
+
             return View();
         }
         
