@@ -11,19 +11,20 @@
        <span>Еще нет аккаунта? @Html.ActionLink("Зарегистрируйтесь!", "Register", "Account", htmlAttributes: new {@class="site_theme_primary element_background_transparent"})</span>
        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new {@class="container"}))
        {
-           <div class="validation" asp-validation-summary="ModelOnly"></div>
+           <br/>
+           <div class="validation invalid-feedback visible" asp-validation-summary="ModelOnly"></div>
            <div class="block_flex_column align-items-center">
                <div class="col-md-4 text-left">
                    <label asp-for="Email" class="form-label"></label>
                    <input asp-for="Email" class="user-info form-control site_theme_primary element_border_primary" placeholder="user@@example.org">
-                   <div id="passwordAlert" class="invalid-feedback visible">
+                   <div class="invalid-feedback visible">
                        @Html.ValidationMessageFor(m => m.Email)
                    </div>
                </div>
                <div class="col-md-4 text-left">
                    <label asp-for="Password" class="form-label"></label>
                    <input asp-for="Password" class="user-info form-control site_theme_primary element_border_primary" placeholder="••••••••">
-                   <div id="passwordAlert" class="invalid-feedback visible">
+                   <div class="invalid-feedback visible">
                        @Html.ValidationMessageFor(m => m.Password)
                    </div>
                    <span>@Html.ActionLink("Забыли пароль?", "Recovery", "Account", htmlAttributes: new {@class="site_theme_primary element_background_transparent"})</span>
