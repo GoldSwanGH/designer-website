@@ -40,3 +40,19 @@ function changeProfileView(e) {
     tagBlock.classList.toggle("block_visibility_active", true);
     tagBlock.classList.toggle("block_padding_none", false);
 }
+
+function searchFunction(input) {
+    var filter, txtValue, elementsCollection, i;
+    filter = input.value.toUpperCase();
+    elementsCollection = document.getElementsByClassName("contentSearchTitle");
+    for (i = 0; i < elementsCollection.length; i++) {
+        var currentElement = elementsCollection[i];
+        txtValue = currentElement.innerText || currentElement.textContent;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            currentElement.parentElement.style.display = "";
+        }
+        else {
+            currentElement.parentElement.style.display = "none";
+        }
+    }
+}
