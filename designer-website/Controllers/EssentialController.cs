@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
 using Microsoft.AspNetCore.Authorization;
@@ -36,27 +38,6 @@ namespace designer_website.Controllers
         public IActionResult Author(UserViewModel model)
         {
             return View(model);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult CreateOrder()
-        {
-            return View();
-        }
-        
-        [Authorize]
-        [HttpPost]
-        public IActionResult CreateOrder(OrderViewModel model)
-        {
-            /*
-            OrderInfo order = new OrderInfo();
-            foreach (var VARIABLE in model.Designers)
-            {
-                
-            }
-            order.DesignerOrderInfoIds.Add(new DesignerOrderInfoId{ User = _dbcontext.Users.FirstOrDefault(u => u.Email == Email)}); */
-            return View();
         }
 
         public IActionResult Market()
