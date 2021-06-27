@@ -689,6 +689,22 @@ html, body, main {
     text-align: center !important;
 }
 
+.right {
+    right: 0;
+}
+
+.left {
+    left: 0;
+}
+
+.top {
+    top: 0;
+}
+
+.bottom {
+    bottom: 0;
+}
+
 .validation ul, .validation li {
     list-style: none;
     padding: 0;
@@ -696,7 +712,6 @@ html, body, main {
 
 @media all and (min-width: 992px) {
     .header__item-content .dropdown-menu {
-        right: 0;
         display: none; 
     }
     .header__item-content:hover .dropdown-menu {display: block;}
