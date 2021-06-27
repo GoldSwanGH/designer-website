@@ -249,6 +249,10 @@ namespace designer_website.Controllers
                 
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
+            else
+            {
+                ModelState.AddModelError("", "Неопознанная ошибка модели");
+            }
             return View();
         }
 
