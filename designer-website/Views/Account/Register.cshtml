@@ -11,26 +11,27 @@
         <h1 class="display-4 block_margin-bottom_small">Регистрация</h1>
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new {@class="container"}))
         {
-            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <br/>
+            <div class="validation invalid-feedback visible" asp-validation-summary="ModelOnly"></div>
             <div class="row g-3">
                 <div class="col-md-4 text-left">
                     <label asp-for="Email" class="form-label"></label>
                     <input asp-for="Email" class="user-info form-control site_theme_primary element_border_primary" placeholder="user@@example.org">
-                    <div id="passwordAlert" class="invalid-feedback visible">
+                    <div class="invalid-feedback visible">
                         @Html.ValidationMessageFor(m => m.Email)
                     </div>
                 </div>
                 <div class="col-md-4 text-left">
                     <label asp-for="Password" class="form-label"></label>
                     <input asp-for="Password" class="user-info form-control site_theme_primary element_border_primary" placeholder="••••••••">
-                    <div id="passwordAlert" class="invalid-feedback visible">
+                    <div class="invalid-feedback visible">
                         @Html.ValidationMessageFor(m => m.Password)
                     </div>
                 </div>
                 <div class="col-md-4 text-left">
                     <label asp-for="ConfirmPassword" class="form-label"></label>
                     <input asp-for="ConfirmPassword" class="user-info form-control site_theme_primary element_border_primary" placeholder="">
-                    <div id="passwordAlert" class="invalid-feedback visible">
+                    <div class="invalid-feedback visible">
                         @Html.ValidationMessageFor(m => m.ConfirmPassword)
                     </div>
                 </div>
@@ -39,21 +40,21 @@
                 <div class="col-md-4 text-left">
                     <label asp-for="Tel" class="form-label"></label>
                     <input asp-for="Tel" class="user-info form-control site_theme_primary element_border_primary" placeholder="+71112223344">
-                    <div id="passwordAlert" class="invalid-feedback visible">
+                    <div class="invalid-feedback visible">
                         @Html.ValidationMessageFor(m => m.Tel)
                     </div>
                 </div>
                 <div class="col-md-4 text-left">
                     <label asp-for="FirstName" class="form-label"></label>
                     <input asp-for="FirstName" class="user-info form-control site_theme_primary element_border_primary" placeholder="">
-                    <div id="passwordAlert" class="invalid-feedback visible">
+                    <div class="invalid-feedback visible">
                         @Html.ValidationMessageFor(m => m.FirstName)
                     </div>
                 </div>
                 <div class="col-md-4 text-left">
                     <label asp-for="LastName" class="form-label"></label>
                     <input asp-for="LastName" class="user-info form-control site_theme_primary element_border_primary" placeholder="(опционально)">
-                    <div id="passwordAlert" class="invalid-feedback visible">
+                    <div class="invalid-feedback visible">
                         @Html.ValidationMessageFor(m => m.LastName)
                     </div>
                 </div>

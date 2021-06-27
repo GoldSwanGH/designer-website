@@ -37,7 +37,7 @@ namespace designer_website.Controllers
         {
             return View(model);
         }
-        
+
         [Authorize]
         [HttpGet]
         public IActionResult CreateOrder()
@@ -48,6 +48,11 @@ namespace designer_website.Controllers
         [Authorize]
         [HttpPost]
         public IActionResult CreateOrder(OrderViewModel model)
+        {
+            return View();
+        }
+
+        public IActionResult Market()
         {
             return View();
         }

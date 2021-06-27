@@ -4,7 +4,7 @@ using designer_website.Models;
 namespace designer_website.Attributes
 {
     // Был заменен на готовый атрибут валидации Compare
-    public class ConfirmPasswordAttribute : ValidationAttribute//, IClientModelValidator
+    /* public class ConfirmPasswordAttribute : ValidationAttribute//, IClientModelValidator
     {
         private string GetErrorMessage() => "Пароли не совпадают.";
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -16,7 +16,7 @@ namespace designer_website.Attributes
             }
             return ValidationResult.Success;
         }
-        /*
+        
         Следующий кусок кода должен был реализовывать IClientModelValidator для работы валидации Confirm password на
         стороне клиента, но, судя по всему, там нужно еще и с JS поработать на стороне клиента, поэтому пока реализация
         отложена.
@@ -35,6 +35,6 @@ namespace designer_website.Attributes
 
             attributes.Add(key, value);
             return true;
-        } */
-    }
+        } 
+    }*/
 }
