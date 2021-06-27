@@ -30,13 +30,13 @@ function changeProfileView(e) {
     }
     ["no-hover", "btn-fill-secondary", "icon_color_secondary"].map(cls => e.classList.toggle(cls, true));
     e.classList.toggle("btn-outline-primary", false);
-    ["ordersBlock", "worksBlock", "userInfoBlock"].map(el => {
-        var block = document.getElementById(el);
-        if (tag !== el.replace("Block","")) {
-            block.classList.toggle("block_visibility_active", false);
-            block.classList.toggle("block_padding_none", true);
+    call = document.getElementsByClassName("profileContentBlock");
+    for (i = 0; i < call.length; i++) {
+        if (tag !== call[i].id.replace("Block","")) {
+            call[i].classList.toggle("block_visibility_active", false);
+            call[i].classList.toggle("block_padding_none", true);
         }
-    });
+    }
     tagBlock.classList.toggle("block_visibility_active", true);
     tagBlock.classList.toggle("block_padding_none", false);
 }
