@@ -15,6 +15,10 @@ namespace designer_website.Models
         
         public List<UserViewModel> AllDesigners { get; set; }
         
+        public int DefaultPrice { get; set; }
+        
+        public string DefaultDescription { get; set; }
+        
         public string Description { get; set; }
     }
 }
