@@ -49,6 +49,13 @@ namespace designer_website.Controllers
         [HttpPost]
         public IActionResult CreateOrder(OrderViewModel model)
         {
+            /*
+            OrderInfo order = new OrderInfo();
+            foreach (var VARIABLE in model.Designers)
+            {
+                
+            }
+            order.DesignerOrderInfoIds.Add(new DesignerOrderInfoId{ User = _dbcontext.Users.FirstOrDefault(u => u.Email == Email)}); */
             return View();
         }
 
