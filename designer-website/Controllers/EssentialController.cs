@@ -38,26 +38,26 @@ namespace designer_website.Controllers
             return View(model);
         }
 
-        [Authorize]
-        [HttpGet]
-        public IActionResult CreateOrder()
-        {
-            return View();
-        }
-        
-        [Authorize]
-        [HttpPost]
-        public IActionResult CreateOrder(OrderViewModel model)
-        {
-            /*
-            OrderInfo order = new OrderInfo();
-            foreach (var VARIABLE in model.Designers)
-            {
-                
-            }
-            order.DesignerOrderInfoIds.Add(new DesignerOrderInfoId{ User = _dbcontext.Users.FirstOrDefault(u => u.Email == Email)}); */
-            return View();
-        }
+        // [Authorize]
+        // [HttpGet]
+        // public IActionResult CreateOrder()
+        // {
+        //     return View();
+        // }
+        //
+        // [Authorize]
+        // [HttpPost]
+        // public IActionResult CreateOrder(OrderViewModel model)
+        // {
+        //     /*
+        //     OrderInfo order = new OrderInfo();
+        //     foreach (var VARIABLE in model.Designers)
+        //     {
+        //         
+        //     }
+        //     order.DesignerOrderInfoIds.Add(new DesignerOrderInfoId{ User = _dbcontext.Users.FirstOrDefault(u => u.Email == Email)}); */
+        //     return View();
+        // }
 
         public IActionResult Market()
         {
