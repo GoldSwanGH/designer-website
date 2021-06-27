@@ -309,6 +309,8 @@ namespace designer_website.Controllers
                 {
                     user.Tel = model.Tel;
                 }
+
+                _dbcontext.SaveChanges();
             }
 
             return View(model);
@@ -354,9 +356,11 @@ namespace designer_website.Controllers
                 {
                     user.Tel = model.Tel;
                 }
+                
+                _dbcontext.SaveChanges();
             }
             
-            return View(model);
+            return View();
         }
 
         [Authorize]
