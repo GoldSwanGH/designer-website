@@ -36,5 +36,10 @@ namespace designer_website.Controllers
         {
             return View(model);
         }
+
+        public IActionResult Market()
+        {
+            return View();
+        }
     }
 }
