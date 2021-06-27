@@ -1,11 +1,14 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Подтверждено";
 }
 
-<div class="text-center">
-<h2>Спасибо!</h2>
-<p>Ваша учетная запись была успешно активирована. Пожалуйста, залогиньтесь в свою учетную запись.</p>
+<div class="anchor block_flex_column">
+    <div class="main__content text-center">
+        <h1>Добро пожаловать!</h1>
+        <p>Ваша учетная запись была успешно активирована. Пожалуйста, 
+            <a asp-action="Login" class="site_theme_primary element_background_transparent">войдите</a>
+             в свою учетную запись.</p>
+    </div>
 </div>
