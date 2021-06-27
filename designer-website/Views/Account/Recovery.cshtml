@@ -10,9 +10,6 @@
         @if ((bool) ViewData["Post"])
         {
             <span>Письмо с дальнейшими инструкциями было выслано на Вашу почту.</span>
-            @*<div class="main__content text-center">
-                <span>Письмо с дальнейшими инструкциями было выслано на Вашу почту.</span>
-            </div>*@
         }
         else
         {
@@ -23,7 +20,7 @@
                     <div class="col-md-4 text-left">
                         <label asp-for="Email" class="form-label"></label>
                         <input asp-for="Email" class="user-info form-control site_theme_primary element_border_primary" placeholder="user@@example.org">
-                        <div id="passwordAlert" class="invalid-feedback visible">
+                        <div class="invalid-feedback visible">
                             @Html.ValidationMessageFor(m => m.Email)
                         </div>
                     </div>
