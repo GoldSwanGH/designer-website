@@ -103,6 +103,17 @@ namespace designer_website.Models.EntityFrameworkModels
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.HasData(new Role
+                {
+                    RoleName = "Admin"
+                }, new Role
+                {
+                    RoleName = "Designer"
+                }, new Role
+                {   
+                    RoleName = "User"
+                });
             });
 
             modelBuilder.Entity<Service>(entity =>
@@ -172,6 +183,22 @@ namespace designer_website.Models.EntityFrameworkModels
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_Role");
+
+                entity.HasData(new User
+                {
+                    Email = "admin@gg",
+                    FirstName = "admin",
+                    Password = BCrypt.Net.BCrypt.HashPassword("admin12345"),
+                    RoleId = 1,
+                    Tel = "1"
+                }, new User
+                {
+                    Email = "designer@gg",
+                    FirstName = "designer",
+                    Password = BCrypt.Net.BCrypt.HashPassword("designer12345"),
+                    RoleId = 2,
+                    Tel = "2"
+                });
             });
 
             modelBuilder.Entity<UserWork>(entity =>
