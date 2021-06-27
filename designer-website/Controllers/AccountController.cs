@@ -270,7 +270,7 @@ namespace designer_website.Controllers
         
         [HttpGet]
         [Authorize]
-        public IActionResult Manage()
+        public IActionResult Profile()
         {
             User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
 
@@ -291,7 +291,7 @@ namespace designer_website.Controllers
         
         [HttpPost]
         [Authorize]
-        public IActionResult Manage(UserViewModel model)
+        public IActionResult Profile(UserViewModel model)
         {
             User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
 
@@ -309,11 +309,13 @@ namespace designer_website.Controllers
                 {
                     user.Tel = model.Tel;
                 }
+
+                _dbcontext.SaveChanges();
             }
 
             return View(model);
         }
-        
+
         [Authorize]
         public IActionResult Orders()
         {

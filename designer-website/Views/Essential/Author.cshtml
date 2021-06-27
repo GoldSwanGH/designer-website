@@ -1,7 +1,7 @@
 ﻿@model UserViewModel
 
 @{
-    Layout = "_Layout";
+    ViewData["Title"] = Model.LastName + " " + Model.FirstName.Substring(0,1) + ".";
 }
 
 
@@ -9,7 +9,7 @@
     <div class="main__content block_flex_row justify_content_center block_align_center block_margin-top_normal">
         <div class="card author__card site_theme_reversed block_flex_row block_column-gap_small justify-content-start align-items-center">
             <img class="img img_stretch element_size_normal element_offset-left_normal element_border_circle" src="~/static-pic/photos/author.jpg" alt="">
-            <span class="">@(Model.LastName+" "+Model.FirstName)</span>
+            <span class="">@(Model.LastName + " " + Model.FirstName)</span>
         </div>
     </div>
     <div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">

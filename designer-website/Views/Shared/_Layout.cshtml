@@ -27,7 +27,7 @@
                     <ul class="dropdown-menu site_theme_reversed element_shadow_smooth element_border-radius_normal script_animate">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li><a asp-controller="" asp-action="" class="dropdown-item site_theme_reversed icon_color_secondary">Профиль</a></li>
+                            <li><a asp-controller="Account" asp-action="Profile" class="dropdown-item site_theme_reversed icon_color_secondary">Профиль</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a asp-controller="Account" asp-action="Logout" class="dropdown-item site_theme_reversed icon_color_secondary">Выйти</a></li>
                         }
