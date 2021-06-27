@@ -1,27 +1,36 @@
 ﻿@{
-    ViewData["Title"] = "Password recovery";
+    ViewData["Title"] = "Восстановление пароля";
 }
 @using Org.BouncyCastle.Asn1.Ocsp
 @model RecoveryViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Recovery</h1>
-    @if ((bool)ViewData["Post"])
-    {
-        <p>Письмо с дальнейшими инструкциями было выслано на Вашу почту.</p>
-    }
-    else
-    {
-        <p>Введите Email вашего аккаунта</p>
-        @using (Html.BeginForm("Recovery", "Account", FormMethod.Post))
+<div class="anchor">
+    <div class="text-center main__content">
+        <h1 class="display-4">Восстановление пароля</h1>
+        @if ((bool) ViewData["Post"])
         {
-            @Html.LabelFor(m => m.Email)
-            <br />
-            @Html.EditorFor(m => m.Email)
-            @Html.ValidationMessageFor(m => m.Email)
-            <br /><br />
-                  
-            <input type="submit" value="Проверить"/>
+            <span>Письмо с дальнейшими инструкциями было выслано на Вашу почту.</span>
+            @*<div class="main__content text-center">
+                <span>Письмо с дальнейшими инструкциями было выслано на Вашу почту.</span>
+            </div>*@
         }
-    }
+        else
+        {
+            <span>Введите Email вашего аккаунта</span>
+            @using (Html.BeginForm("Recovery", "Account", FormMethod.Post))
+            {
+                <div class="block_flex_column align-items-center">
+                    <div class="col-md-4 text-left">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="user-info form-control site_theme_primary element_border_primary" placeholder="user@@example.org">
+                        <div id="passwordAlert" class="invalid-feedback visible">
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value="Восстановить" class="btn btn-fill-secondary block_margin-top_small"/>
+            }
+        }
+    </div>
+    
 </div>
