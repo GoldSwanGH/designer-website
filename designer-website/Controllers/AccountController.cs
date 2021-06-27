@@ -390,6 +390,8 @@ namespace designer_website.Controllers
                             Tel = user.Tel
                         });
                     }
+
+                    model.ChosenDesigners = chosenDesigners;
                 }
                 catch
                 {
