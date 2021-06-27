@@ -118,6 +118,12 @@ namespace designer_website.Models.EntityFrameworkModels
                     .IsRequired()
                     .HasMaxLength(500)
                     .IsUnicode(false);
+
+                entity.HasData(
+                    new Service{ ServiceId = 1, ServiceName = "Макет сайта" },
+                    new Service{ ServiceId = 2, ServiceName = "Логотип" },
+                    new Service{ ServiceId = 3, ServiceName = "Фирменный стиль" },
+                    new Service{ ServiceId = 4, ServiceName = "Баннер" });
             });
 
             modelBuilder.Entity<User>(entity =>
