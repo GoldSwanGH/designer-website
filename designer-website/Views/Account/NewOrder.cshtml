@@ -17,7 +17,7 @@
                     <label class="input-group-text element_border_none site_theme_reversed">Автор</label>
                     <select class="form-select site_theme_primary element_border_none">
                         <option selected>
-                            @if (Model.ChosenDesigners.Count != 0)
+                            @if (Model.ChosenDesigners != null)
                             {
                                 var fullName = Model.ChosenDesigners[0].LastName + " " + Model.ChosenDesigners[0].FirstName;
                                 <span>@fullName</span>
@@ -29,11 +29,13 @@
                         </option>
                         @foreach (var designer in Model.AllDesigners)
                         {
-                            if (designer != Model.ChosenDesigners[0])
+                            @*if (designer != Model.ChosenDesigners[0])
                             {
                                 var fullName = designer.LastName + " " + designer.FirstName;
                                 <option>@fullName</option>
-                            }
+                            }*@
+                            var fullName = designer.LastName + " " + designer.FirstName;
+                            <option>@fullName</option>
                         }
                     </select>
                 </div>
