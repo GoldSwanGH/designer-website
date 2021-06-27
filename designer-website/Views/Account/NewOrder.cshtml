@@ -1,0 +1,81 @@
+﻿@* @model TModel *@
+
+@{
+    ViewData["Title"] = "Новый заказ";
+}
+
+
+<div class="anchor block_flex_column justify-content-center" style="background-image: url(/designer-website/wwwroot/static-pic/photos/webpic.png); background-size: cover;">
+    <div class="main__content element_background_secondary-normal element_border-radius_smooth block_scroll_enable block_scrollbar_hide">
+        <div class="card__item block_padding_none block_align_center">
+            <h5 class="title-top element_background_secondary block_padding_normal">Разработка макета веб-сайта</h5>
+        </div>
+        <div class="main__content order__form block_padding_none">
+            <div class="block_flex_row justify-content-center block_column-gap_small">
+                <div class="input-group mb-3 element_border_none">
+                    <label class="input-group-text element_border_none site_theme_reversed">Автор</label>
+                    <select class="form-select site_theme_primary element_border_none">
+                        <option selected>Не выбрано (обязательно)</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text element_border_none site_theme_reversed">Автор</label>
+                    <select class="form-select site_theme_primary element_border_none">
+                        <option selected>Не выбрано (опционально)</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <div class="block_flex_row justify-content-center block_column-gap_small">
+                <div class="input-group mb-3">
+                    <span class="input-group-text element_border_none site_theme_reversed">Количество страниц</span>
+                    <input type="text" class="form-control site_theme_primary element_border_none" placeholder="Например: 12" aria-label="Страницы" aria-describedby="inputPages">
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text element_border_none site_theme_reversed">Тип сайта</label>
+                    <select class="form-select site_theme_primary element_border_none">
+                        <option selected>Не выбрано...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <div class="block_flex_row justify-content-center block_column-gap_small">
+                <div class="input-group mb-3">
+                    <span class="input-group-text element_border_none site_theme_reversed">@@</span>
+                    <input type="text" class="form-control site_theme_primary element_border_none" placeholder="user@example.org" aria-label="Почта" aria-describedby="inputEmail">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text element_border_none site_theme_reversed">+7</span>
+                    <input type="text" class="form-control site_theme_primary element_border_none" placeholder="(000) 000 00 00" aria-label="Телефон" aria-describedby="inputTel">
+                </div>
+            </div>
+        </div>
+        <div class="main__content main__content_padding-side_none site_theme_reversed block_flex_column justify-content-center">
+            <p class="description block_padding_normal">
+                Небольшой сайт для размещения в сети Интернет. Используется для
+                ознакомления пользователей с брендом/лицом/компанией/продукцией.
+                Практически не предполагает интерактивности и высокой нагрузки.
+            </p>
+            <p class="description block_padding_normal">
+                После оформления и оплаты заказа, наши менеджеры свяжутся
+                с Вами для подтверждения и уточнения деталей и сроков выполнения.
+            </p>
+            <h3 class="block_align_center element_border-radius_smoother block_padding_low block_padding-side_normal site_theme_primary">250$</h3>
+        </div>
+        <div class="block_flex_row justify-content-center align-items-center">
+            <div class="block_flex_column justify-content-end block_padding_normal">
+                <form action=""><button type="submit" class="card-title btn btn-secondary btn-lg element_border-radius_smooth block_align_right text_theme_thin">Заказать</button></form>
+            </div>
+            <div class="block_flex_column justify-content-end block_padding_normal">
+                <form action="javascript:history.back()"><button type="submit" class="card-title btn btn-outline-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin">Отмена</button></form>
+            </div>
+        </div>
+    </div>
+</div>
