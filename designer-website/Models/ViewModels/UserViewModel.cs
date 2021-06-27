@@ -17,10 +17,6 @@ namespace designer_website.Models
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
         [DisplayName("Почта")]
         public virtual string Email { get; set; }
-        
-        [DataType(DataType.Password)]
-        [DisplayName("Пароль")]
-        public virtual string Password { get; set; }
 
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
         [DisplayName("Телефон")]
