@@ -1,4 +1,5 @@
-﻿@* @model TModel *@
+﻿@using Microsoft.EntityFrameworkCore
+@model OrderViewModel
 
 @{
     ViewData["Title"] = "Новый заказ";
@@ -8,17 +9,32 @@
 <div class="anchor block_flex_column justify-content-center" style="background-image: url(/designer-website/wwwroot/static-pic/photos/webpic.png); background-size: cover;">
     <div class="main__content element_background_secondary-normal element_border-radius_smooth block_scroll_enable block_scrollbar_hide">
         <div class="card__item block_padding_none block_align_center">
-            <h5 class="title-top element_background_secondary block_padding_normal">Разработка макета веб-сайта</h5>
+            <h5 class="title-top element_background_secondary block_padding_normal">@Model.ChosenService.ServiceName</h5>
         </div>
         <div class="main__content order__form block_padding_none">
             <div class="block_flex_row justify-content-center block_column-gap_small">
                 <div class="input-group mb-3 element_border_none">
                     <label class="input-group-text element_border_none site_theme_reversed">Автор</label>
                     <select class="form-select site_theme_primary element_border_none">
-                        <option selected>Не выбрано (обязательно)</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option selected>
+                            @if (Model.ChosenDesigners.Count != 0)
+                            {
+                                var fullName = Model.ChosenDesigners[0].LastName + " " + Model.ChosenDesigners[0].FirstName;
+                                <span>@fullName</span>
+                            }
+                            else
+                            {
+                                <span>Не выбрано (обязательно)</span>
+                            }
+                        </option>
+                        @foreach (var designer in Model.AllDesigners)
+                        {
+                            if (designer != Model.ChosenDesigners[0])
+                            {
+                                var fullName = designer.LastName + " " + designer.FirstName;
+                                <option>@fullName</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="input-group mb-3">
