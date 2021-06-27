@@ -35,7 +35,7 @@ namespace designer_website.Models
         [DataType(DataType.Password)]
         [DisplayName("Подтверждение пароля")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public override string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Это обязательное поле.")]
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
