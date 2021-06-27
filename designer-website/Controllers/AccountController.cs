@@ -376,7 +376,7 @@ namespace designer_website.Controllers
                     var chosenDesigners = new List<UserViewModel>();
                     foreach (var designer in initialModel.Designers)
                     {
-                        var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == designer);
+                        var user = _dbcontext.Users.FirstOrDefault(u => u.Email == designer);
                         if (user == null)
                         {
                             throw new Exception();
