@@ -9,6 +9,8 @@ namespace designer_website.Models
     {
         public List<Service> Services { get; set; }
         
+        public Service ChosenService { get; set; }
+        
         public List<UserViewModel> Designers { get; set; }
         
         public string Description { get; set; }
