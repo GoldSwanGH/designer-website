@@ -1,4 +1,5 @@
-﻿@* @model ServiceCollectionViewModel *@
+﻿@using designer_website.Models.ViewModels
+@model designer_website.Models.ViewModels.ServiceCollectionViewModel
 
 @{
     ViewData["Title"] = "Маркетплейс";
@@ -13,7 +14,7 @@
             <button class="btn btn-outline-primary" type="submit">Найти</button>
         </form>
     </div>
-    @*@foreach (var service in Model.Services)
+    @foreach (var service in Model.Services)
     {
         <div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">
             <div class="card element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
@@ -22,12 +23,26 @@
                     <h5 class="card-title element_background_secondary-normal block_padding_normal">@service.ServiceName</h5>
                 </div>
                 <div class="card-img-overlay card__item block_align_right block_flex_column block_padding_normal block_justify_bottom">
-                    <form action=""><button type="submit" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin">Заказать</button></form>
+                    @* <button type="submit" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin"> *@
+                        @*@{
+                            var Chosen = new NewOrderInitialModel();
+                            Chosen.ServiceId = service.ServiceId;
+                        }*@
+                        @using (Html.BeginForm("NewOrder", "Account", FormMethod.Post))
+                        {
+                            {
+                                var chosen = new NewOrderInitialModel();
+                                chosen.ServiceId = service.ServiceId;
+                            }
+                            <input type="submit" value="Заказать" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin"/>
+                        }
+                        @* @Html.ActionLink("", "NewOrder", "Account", Chosen, new {@class = "button button-overlay block_position_absolute"}) *@
+                    @*</button>*@
                 </div>
             </div>
         </div>
-    }*@
-    <div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">
+    }
+    @*<div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">
         <div class="card element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
             <img src="~/static-pic/photos/webpic.png" class="card-img element_border-radius_smooth" alt="нет изображения">
             <div class="card-img-overlay card__item">
@@ -37,5 +52,5 @@
                 <form asp-controller="Account" asp-action="NewOrder"><button type="submit" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin">Заказать</button></form>
             </div>
         </div>
-    </div>
+    </div>*@
 </div>
