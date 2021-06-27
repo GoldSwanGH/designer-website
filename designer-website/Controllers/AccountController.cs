@@ -386,6 +386,7 @@ namespace designer_website.Controllers
                 order.OrderDescription = model.Description;
                 order.User = client;
                 order.Date = DateTime.Now;
+                order.Service = model.ChosenService;
 
                 _dbcontext.OrderInfos.Add(order);
                 _dbcontext.SaveChanges();
