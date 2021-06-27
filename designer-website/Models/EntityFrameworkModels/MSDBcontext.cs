@@ -209,6 +209,12 @@ namespace designer_website.Models.EntityFrameworkModels
                     .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.Works)
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Work_Service");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -10,6 +10,7 @@ namespace designer_website.Models.EntityFrameworkModels
         public Service()
         {
             OrderInfos = new HashSet<OrderInfo>();
+            Works = new HashSet<Work>();
         }
 
         public int ServiceId { get; set; }
@@ -18,5 +19,6 @@ namespace designer_website.Models.EntityFrameworkModels
         public string ServiceDescription { get; set; }
 
         public virtual ICollection<OrderInfo> OrderInfos { get; set; }
+        public virtual ICollection<Work> Works { get; set; }
     }
 }
