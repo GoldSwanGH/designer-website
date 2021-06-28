@@ -67,7 +67,15 @@
                                 {
                                     if (i < work.Designers.Count)
                                     {
-                                        chosen.Designers.Add(work.Designers[i].Email);
+                                        switch (i)
+                                        {
+                                            case 0:
+                                                chosen.FirstDesigner = work.Designers[i].userId;
+                                                break;
+                                            case 1:
+                                                chosen.SecondDesigner = work.Designers[i].userId;
+                                                break;
+                                        }
                                     }
                                 }
                             }
