@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using designer_website.Attributes;
+using designer_website.Models.EntityFrameworkModels;
 
 namespace designer_website.Models
 {
@@ -21,5 +22,17 @@ namespace designer_website.Models
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
         [DisplayName("Телефон")]
         public virtual string Tel { get; set; }
+
+        public static UserViewModel ToUserViewModel(User user)
+        {
+            var model = new UserViewModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Tel = user.Tel
+            };
+            return model;
+        }
     }
 }
