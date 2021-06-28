@@ -1,5 +1,5 @@
 ﻿@using designer_website.Models.ViewModels
-@model UserCollectionViewModel
+@model ProfileCollectionViewModel
 
 @{
     ViewData["Title"] = "Авторы";
@@ -16,7 +16,7 @@
     </div>
     <div class="main__content block_flex_row block_flex_wrap justify-content-between block_margin-top_normal block_scroll_enable block_scrollbar_hide">
         @{
-            foreach (var author in Model.Users)
+            foreach (var author in Model.ProfileList)
             {
                 <div class="author__item script_animate element_hover_transform element_hover_primary-shadow block_position_relative block_justify_center block_flex_column justify-content-end align-items-center element_shadow_smooth element_border-radius_smooth">
                     @Html.ActionLink("", "Author", author, new {@class="button button-overlay block_position_absolute"})
