@@ -7,6 +7,7 @@ namespace designer_website.Models
 {
     public class UserViewModel
     {
+        public int? userId { get; set; }
         [DataType(DataType.Text)]
         [DisplayName("Имя")]
         public virtual string FirstName { get; set; }
@@ -27,6 +28,7 @@ namespace designer_website.Models
         {
             var model = new UserViewModel
             {
+                userId = user.UserId,
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
