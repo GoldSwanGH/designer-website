@@ -6,5 +6,10 @@ namespace designer_website.Models.ViewModels
     public class ServiceCollectionViewModel
     {
         public List<Service> Services { get; set; }
+
+        public ServiceCollectionViewModel()
+        {
+            Services = new List<Service>();
+        }
     }
 }

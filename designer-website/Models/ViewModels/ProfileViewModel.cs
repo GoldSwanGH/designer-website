@@ -12,6 +12,12 @@ namespace designer_website.Models.ViewModels
         
         public List<UserWorksViewModel> UserWorksList { get; set; }
 
+        public ProfileViewModel()
+        {
+            OrderDesignersList = new List<OrderDesignersViewModel>();
+            UserWorksList = new List<UserWorksViewModel>();
+        }
+
         public static ProfileViewModel FillProfileViewModel(User user, MSDBcontext dbContext)
         {
             var model = new ProfileViewModel();

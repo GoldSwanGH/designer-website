@@ -7,5 +7,10 @@ namespace designer_website.Models.ViewModels
         public int? ServiceId { get; set; }
         
         public List<string> Designers { get; set; }
+
+        public NewOrderInitialModel()
+        {
+            Designers = new List<string>();
+        }
     }
 }

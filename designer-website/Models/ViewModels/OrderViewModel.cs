@@ -7,8 +7,7 @@ namespace designer_website.Models
 {
     public class OrderViewModel
     {
-        public List<Service> Services { get; set; }
-        
+
         public Service ChosenService { get; set; }
         
         public List<UserViewModel> ChosenDesigners { get; set; }
@@ -18,5 +17,12 @@ namespace designer_website.Models
         public string Description { get; set; }
         
         public int? Price { get; set; }
+
+        public OrderViewModel()
+        {
+            ChosenService = new Service();
+            ChosenDesigners = new List<UserViewModel>();
+            AllDesigners = new List<UserViewModel>();
+        }
     }
 }
