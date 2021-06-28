@@ -17,10 +17,23 @@
     <div id="specials" class="anchor main__title-screen">
         <img class="main__title-icon block_justify_center element_opacity_middle" src="~/static-pic/icons/SpecialTitle.svg" alt="">
         <div class="main__content block_position_absolute block_flex_column">
-            @* <a asp-controller="Account" asp-action="CreateDesigner">Create Designer</a> *@
+            @* Space for specials *@
         </div>
     </div>
-    <div id="info" class="footer footer-position anchor site_theme_primary">
-        <span class="footer__copyright footer__item block_justify_bottom">2021 Agency</span>
+    <div id="info" class="anchor footer footer-position site_theme_primary block_flex_column align-items-center">
+        <div class="footer__item block_justify_bottom block_flex_column">
+            <div class="main__content block_justify_bottom mb-3">
+                <a href="mailto:user@example.org" class="btn btn-outline-primary">Напишите нам на почту</a>
+                <a href="tel:+70000000000" class="btn btn-outline-primary">Позвоните нам</a>
+            </div>
+            <p class="footer__copyright mb-3 block_justify_bottom">
+                <span>©2021 Agency |</span>
+                <span>
+                    Authors:
+                    <a href="https://github.com/GoldSwanGH">github/GoldSwanGH</a>,
+                    <a href="https://github.com/amaterasuzxc">github/amaterasuzxc</a>
+                </span>
+            </p>
+        </div>
     </div>
 </div>
