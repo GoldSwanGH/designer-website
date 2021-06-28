@@ -360,23 +360,23 @@ namespace designer_website.Controllers
         
         [HttpPost]
         [Authorize]
-        public IActionResult Profile(UserViewModel model)
+        public IActionResult Profile(ProfileViewModel model)
         {
             User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
 
             if (user != null)
             {
-                if (model.FirstName != user.FirstName)
+                if (model.User.FirstName != user.FirstName)
                 {
-                    user.FirstName = model.FirstName;
+                    user.FirstName = model.User.FirstName;
                 }
-                if (model.LastName != user.LastName)
+                if (model.User.LastName != user.LastName)
                 {
-                    user.LastName = model.LastName;
+                    user.LastName = model.User.LastName;
                 }
-                if (model.Tel != user.Tel)
+                if (model.User.Tel != user.Tel)
                 {
-                    user.Tel = model.Tel;
+                    user.Tel = model.User.Tel;
                 }
 
                 _dbcontext.SaveChanges();
@@ -500,7 +500,7 @@ namespace designer_website.Controllers
                 ModelState.AddModelError("", "Ошибка добавления заказа.");
             }
 
-            return View();
+            return RedirectToAction("Index","Home");
         }
         
         public IActionResult Works()
