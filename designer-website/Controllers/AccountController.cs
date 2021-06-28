@@ -461,8 +461,11 @@ namespace designer_website.Controllers
                 return View(model);
             }
 
+            order.Service = chosenService;
             order.OrderDescription = model.Description;
             order.Price = chosenService.DefaultPrice;
+
+            var designers = new List<DesignerOrderInfoId>();
 
             if (model.FirstDesignerId != null)
             {
@@ -478,9 +481,10 @@ namespace designer_website.Controllers
                 entry.Order = order;
                 
                 order.DesignerOrderInfoIds.Add(entry);
+                designers.Add(entry);
             }
             
-            if (model.SecondDesignerId != null)
+            if (model.SecondDesignerId != null && model.FirstDesignerId != model.SecondDesignerId)
             {
                 var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.SecondDesignerId);
 
@@ -494,9 +498,11 @@ namespace designer_website.Controllers
                 entry.Order = order;
                 
                 order.DesignerOrderInfoIds.Add(entry);
+                designers.Add(entry);
             }
 
             _dbcontext.OrderInfos.Add(order);
+            _dbcontext.DesignerOrderInfoIds.AddRange(designers);
             _dbcontext.SaveChanges();
             
             return RedirectToAction("Index","Home");
