@@ -34,6 +34,19 @@ namespace designer_website.Controllers
 
         public IActionResult Author(UserViewModel model)
         {
+            var profile = new ProfileViewModel();
+
+            var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.userId);
+
+            if (user != null)
+            {
+                profile = ProfileViewModel.FillProfileViewModel(user, _dbcontext);
+            }
+            else
+            {
+                return RedirectToAction("Market", "Essential");
+            }
+
             return View(model);
         }
 
