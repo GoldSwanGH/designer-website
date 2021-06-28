@@ -1,4 +1,5 @@
-﻿@model UserViewModel
+﻿@using designer_website.Models.ViewModels
+@model ProfileViewModel
 
 @{
     ViewData["Title"] = "Профиль";
@@ -32,36 +33,36 @@
     <div id="userInfoBlock" class="profileContentBlock main__content text-center w-100 block_margin_none align-items-center block_scroll_enable block_scrollbar_hide block_visibility_hidden block_visibility_active">
         @using (Html.BeginForm("Recovery", "Account", FormMethod.Post, new {@class="container"}))
         {
-            {Model.Email = User.Identity.Name;}
+            {Model.User.Email = User.Identity.Name;}
             <input type="submit" value="Изменить пароль" class="btn btn-fill-secondary block_align_center mt-3 mb-3 hidden"/>
         }
         
         @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new {id="infoForm", @class="container"}))
             {
                 <div class="validation invalid-feedback block_padding_low visible" asp-validation-summary="ModelOnly"></div>
-                @Html.DisplayFor(m => m.Email)
-                @Html.HiddenFor(m => m.Email)
+                @Html.DisplayFor(m => m.User.Email)
+                @Html.HiddenFor(m => m.User.Email)
                 
                 <div class="block_flex_column align-items-center">
                     <div class="col-md-4 text-left">
-                        <label asp-for="FirstName" class="form-label"></label>
-                        <input disabled asp-for="FirstName" class="user-info form-control site_theme_primary element_border_primary">
+                        <label asp-for="User.FirstName" class="form-label"></label>
+                        <input disabled asp-for="User.FirstName" class="user-info form-control site_theme_primary element_border_primary">
                         <div class="invalid-feedback visible">
-                            @Html.ValidationMessageFor(m => m.FirstName)
+                            @Html.ValidationMessageFor(m => m.User.FirstName)
                         </div>
                     </div>
                     <div class="col-md-4 text-left">
-                        <label asp-for="LastName" class="form-label"></label>
-                        <input disabled asp-for="LastName" class="user-info form-control site_theme_primary element_border_primary" placeholder="(опционально)">
+                        <label asp-for="User.LastName" class="form-label"></label>
+                        <input disabled asp-for="User.LastName" class="user-info form-control site_theme_primary element_border_primary" placeholder="(опционально)">
                         <div class="invalid-feedback visible">
-                            @Html.ValidationMessageFor(m => m.LastName)
+                            @Html.ValidationMessageFor(m => m.User.LastName)
                         </div>
                     </div>
                     <div class="col-md-4 text-left">
-                        <label asp-for="Tel" class="form-label"></label>
-                        <input disabled asp-for="Tel" class="user-info form-control site_theme_primary element_border_primary">
+                        <label asp-for="User.Tel" class="form-label"></label>
+                        <input disabled asp-for="User.Tel" class="user-info form-control site_theme_primary element_border_primary">
                         <div class="invalid-feedback visible">
-                            @Html.ValidationMessageFor(m => m.Tel)
+                            @Html.ValidationMessageFor(m => m.User.Tel)
                         </div>
                     </div>
                 </div>
