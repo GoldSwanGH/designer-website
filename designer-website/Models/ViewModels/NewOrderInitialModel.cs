@@ -6,8 +6,8 @@ namespace designer_website.Models.ViewModels
     {
         public int? ServiceId { get; set; }
         
-        public string FirstDesigner { get; set; }
+        public int? FirstDesigner { get; set; }
         
-        public string SecondDesigner { get; set; }
+        public int? SecondDesigner { get; set; }
     }
 }

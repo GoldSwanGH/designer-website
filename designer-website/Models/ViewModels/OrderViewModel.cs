@@ -12,9 +12,9 @@ namespace designer_website.Models
         
         public int? ChosenServiceId { get; set; }
         
-        public string FirstDesigner { get; set; }
+        public UserViewModel FirstDesigner { get; set; }
         
-        public string SecondDesigner { get; set; }
+        public UserViewModel SecondDesigner { get; set; }
         
         public List<UserViewModel> AllDesigners { get; set; }
 
