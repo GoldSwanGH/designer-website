@@ -19,8 +19,23 @@ namespace designer_website.Controllers
         }
         public IActionResult Authors()
         {
-            var authors = _dbcontext.Users.Where(u =>
-                u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
+            var authors = _dbcontext.Users
+                .Include(u => u.Role)
+                .Include(u => u.DesignerOrderInfoIds)
+                    .ThenInclude(d => d.Order)
+                        .ThenInclude(o => o.Service)
+                .Include(u => u.DesignerOrderInfoIds)
+                    .ThenInclude(d => d.Order)
+                        .ThenInclude(o => o.DesignerOrderInfoIds)
+                            .ThenInclude(d => d.User)
+                .Include(u => u.UserWorks)
+                    .ThenInclude(w => w.Work)
+                        .ThenInclude(w => w.Service)
+                .Include(u => u.UserWorks)
+                    .ThenInclude(w => w.Work)
+                        .ThenInclude(w => w.UserWorks)
+                            .ThenInclude(w => w.User)
+                .Where(u => u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
             
             var model = new ProfileCollectionViewModel();
 
