@@ -27,7 +27,7 @@ namespace designer_website.Models.ViewModels
                 .Include(uw => uw.User)
                 .Where(w => w.Work == userWork.Work).ToList();
 
-            if (userWorksUserWorks.Count() >= 1)
+            if (userWorksUserWorks.Any())
             {
                 foreach (var entry in userWorksUserWorks)
                 {
