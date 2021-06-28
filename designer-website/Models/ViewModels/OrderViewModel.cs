@@ -12,18 +12,17 @@ namespace designer_website.Models
         
         public int? ChosenServiceId { get; set; }
         
-        public UserViewModel[] ChosenDesigners { get; set; }
+        public string FirstDesigner { get; set; }
+        
+        public string SecondDesigner { get; set; }
         
         public List<UserViewModel> AllDesigners { get; set; }
 
         public string Description { get; set; }
-        
-        public int? Price { get; set; }
 
         public OrderViewModel()
         {
             ChosenService = new Service();
-            ChosenDesigners = new UserViewModel[2];
             AllDesigners = new List<UserViewModel>();
         }
     }
