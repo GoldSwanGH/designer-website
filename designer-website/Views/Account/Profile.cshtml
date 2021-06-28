@@ -88,7 +88,7 @@
             {
                 <div class="row text-center site_theme_reversed block_position_relative block_padding_low element_border-radius_smooth mb-3">
                     <span class="col text_theme_bold">@order.Order.OrderId</span>
-                    <span class="col">@*@order.Order.Service.ServiceName*@</span>
+                    <span class="col">@order.Order.Service.ServiceName</span>
                     <span class="col">
                         @foreach (var author in order.Designers)
                         {
@@ -104,7 +104,7 @@
                     <div class="modal-content align-items-center element_border_none element_background_secondary">
                         <div class="block_flex_column block_margin-top_normal text-center">
                             <span class="text_theme_bold block_padding_low">#@order.Order.OrderId</span>
-                            <span>@*@order.Order.Service.ServiceName*@</span>
+                            <span>@order.Order.Service.ServiceName</span>
                             <span>
                                 @foreach (var author in order.Designers)
                                 {
