@@ -448,7 +448,7 @@ namespace designer_website.Controllers
 
             if (currentUser == null)
             {
-                return View(model);
+                return RedirectToAction("Logout");
             }
 
             order.User = currentUser;
@@ -458,6 +458,7 @@ namespace designer_website.Controllers
 
             if (chosenService == null)
             {
+                ModelState.AddModelError("", "Услуга недоступна");
                 return View(model);
             }
 
@@ -473,6 +474,7 @@ namespace designer_website.Controllers
 
                 if (user == null)
                 {
+                    ModelState.AddModelError("", "Ошибка выбора дизайнера 1");
                     return View(model);
                 }
 
@@ -490,6 +492,7 @@ namespace designer_website.Controllers
 
                 if (user == null)
                 {
+                    ModelState.AddModelError("", "Ошибка выбора дизайнера 2");
                     return View(model);
                 }
 
