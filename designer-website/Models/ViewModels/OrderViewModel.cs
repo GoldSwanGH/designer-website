@@ -16,5 +16,7 @@ namespace designer_website.Models
         public List<UserViewModel> AllDesigners { get; set; }
 
         public string Description { get; set; }
+        
+        public int? Price { get; set; }
     }
 }
