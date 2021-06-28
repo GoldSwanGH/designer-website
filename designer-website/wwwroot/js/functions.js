@@ -70,3 +70,10 @@ if (textarea !== null) {
         textarea.style.height = calcHeight(textarea.value) + "px";
     });
 }
+
+function requiredField(field) {
+    if (field.value === '') {
+        field.setCustomValidity('Это обязательное поле!');
+        return true;
+    }
+}
