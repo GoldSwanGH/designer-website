@@ -402,8 +402,12 @@ namespace designer_website.Controllers
             {
                 model.ChosenService = _dbcontext.Services.FirstOrDefault(s => s.ServiceId == initialModel.ServiceId);
             }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            if (initialModel.Designers != null)
+            if (initialModel.Designers != null && initialModel.Designers.Count != 0)
             {
                 try
                 {
@@ -425,11 +429,14 @@ namespace designer_website.Controllers
                         });
                     }
 
-                    model.ChosenDesigners = chosenDesigners;
+                    for (int i = 0; i < chosenDesigners.Count; i++)
+                    {
+                        model.ChosenDesigners[i] = chosenDesigners[i];
+                    }
                 }
                 catch
                 {
-                    
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
