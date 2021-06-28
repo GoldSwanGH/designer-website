@@ -8,6 +8,12 @@
 //     });
 // }
 
+$("input").keydown(function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+
 var anchors = [];
 var currentAnchor = -1;
 var isAnimating  = false;
