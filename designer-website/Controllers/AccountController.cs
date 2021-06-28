@@ -464,9 +464,9 @@ namespace designer_website.Controllers
             order.OrderDescription = model.Description;
             order.Price = chosenService.DefaultPrice;
 
-            if (model.FirstDesigner != null)
+            if (model.FirstDesignerId != null)
             {
-                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.FirstDesigner.userId);
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.FirstDesignerId);
 
                 if (user == null)
                 {
@@ -480,9 +480,9 @@ namespace designer_website.Controllers
                 order.DesignerOrderInfoIds.Add(entry);
             }
             
-            if (model.SecondDesigner != null)
+            if (model.SecondDesignerId != null)
             {
-                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.SecondDesigner.userId);
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.SecondDesignerId);
 
                 if (user == null)
                 {
