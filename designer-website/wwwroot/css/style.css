@@ -728,3 +728,8 @@ html, body, main {
 }
 
 .header__item-content .dropdown-menu .dropdown-item:hover {color: var(--primary-color);}
+
+.display-email a {
+    text-decoration: none;
+    color: inherit;
+}

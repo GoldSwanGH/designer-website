@@ -1,5 +1,6 @@
 ﻿@using designer_website.Models.ViewModels
 @using Microsoft.VisualBasic
+@using System.Net.NetworkInformation
 @model ProfileViewModel
 
 @{
@@ -41,7 +42,7 @@
         @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new {id="infoForm", @class="container"}))
             {
                 <div class="validation invalid-feedback block_padding_low visible" asp-validation-summary="ModelOnly"></div>
-                @Html.DisplayFor(m => m.User.Email)
+                <span class="display-email site_theme_primary element_background_transparent no-hover">@Html.DisplayFor(m => m.User.Email)</span>
                 @Html.HiddenFor(m => m.User.Email)
                 
                 <div class="block_flex_column align-items-center">
@@ -74,7 +75,7 @@
             }
         <button id="editUserInfo" class="btn btn-secondary block_visibility_hidden block_visibility_active" onclick="userEdit()">Редактировать</button>
         </div>
-    <div id="ordersBlock" class="profileContentBlock main__content w-100 block_margin-bottom_small block_flex_column align-items-center block_visibility_hidden block_padding_none">
+    <div id="ordersBlock" class="profileContentBlock main__content w-100 block_margin_none block_margin-bottom_small block_flex_column align-items-center block_visibility_hidden block_padding_none">
         <div class="container row text-center site_theme_reversed block_padding_low element_border-radius_smooth w-100 mb-3">
             <span class="col text_theme_bold">Номер заказа</span>
             <span class="col text_theme_bold">Тип услуги</span>
@@ -94,15 +95,15 @@
                             @((author.LastName + " " + author.FirstName + ",").TrimEnd(','))
                         }
                     </span>
-                    <span class="col">@order.Order.Date</span>
-                    <span class="col">@order.Order.Price</span>
+                    <span class="col">@((order.Order.Date).ToString("dddd, dd MMMM yyyy"))</span>
+                    <span class="col">@((order.Order.Price + "$").TrimStart('$'))</span>
                     <button type="button" class="button button-overlay block_position_absolute" data-bs-toggle="modal" data-bs-target="#orderId-@order.Order.OrderId"></button>
                 </div>
             <div class="modal modal-xl modal-overlay fade" id="orderId-@order.Order.OrderId" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered card-overlay justify-content-center block_align_center block_zindex_high">
                     <div class="modal-content align-items-center element_border_none element_background_secondary">
                         <div class="block_flex_column block_margin-top_normal text-center">
-                            <span class="text_theme_bold block_padding_low">@order.Order.OrderId</span>
+                            <span class="text_theme_bold block_padding_low">#@order.Order.OrderId</span>
                             <span>@*@order.Order.Service.ServiceName*@</span>
                             <span>
                                 @foreach (var author in order.Designers)
@@ -110,10 +111,10 @@
                                     @((author.LastName + " " + author.FirstName + ",").TrimEnd(','))
                                 }
                             </span>
-                            <span>@order.Order.Date</span>
-                            <span>@order.Order.Price</span>
+                            <span>@((order.Order.Date).ToString("dddd, dd MMMM yyyy"))</span>
+                            <span>@((order.Order.Price + "$").TrimStart('$'))</span>
                         </div>
-                        <div class="site_theme_reversed block_margin-bottom_small block_margin-top_small block_flex_column justify-content-center">
+                        <div class="site_theme_reversed block_margin-bottom_small block_margin-top_small block_flex_column justify-content-center w-100">
                             <p class="description block_padding_normal">
                                 @order.Order.OrderDescription
                             </p>
