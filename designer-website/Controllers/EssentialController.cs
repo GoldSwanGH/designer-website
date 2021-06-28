@@ -36,7 +36,23 @@ namespace designer_website.Controllers
         {
             var profile = new ProfileViewModel();
 
-            var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.userId);
+            var user = _dbcontext.Users
+                .Include(u => u.Role)
+                .Include(u => u.DesignerOrderInfoIds)
+                    .ThenInclude(d => d.Order)
+                        .ThenInclude(o => o.Service)
+                .Include(u => u.DesignerOrderInfoIds)
+                    .ThenInclude(d => d.Order)
+                        .ThenInclude(o => o.DesignerOrderInfoIds)
+                            .ThenInclude(d => d.User)
+                .Include(u => u.UserWorks)
+                    .ThenInclude(w => w.Work)
+                        .ThenInclude(w => w.Service)
+                .Include(u => u.UserWorks)
+                    .ThenInclude(w => w.Work)
+                        .ThenInclude(w => w.UserWorks)
+                            .ThenInclude(w => w.User)
+                .FirstOrDefault(u => u.UserId == model.userId);
 
             if (user != null)
             {
@@ -47,7 +63,7 @@ namespace designer_website.Controllers
                 return RedirectToAction("Market", "Essential");
             }
 
-            return View(model);
+            return View(profile);
         }
 
         public IActionResult Market()
