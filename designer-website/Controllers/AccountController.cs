@@ -307,17 +307,51 @@ namespace designer_website.Controllers
         [Authorize]
         public IActionResult Profile()
         {
-            User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            User user;
+            if (User.IsInRole("Designer"))
+            {
+                user = _dbcontext.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.DesignerOrderInfoIds)
+                        .ThenInclude(d => d.Order)
+                            .ThenInclude(o => o.Service)
+                    .Include(u => u.DesignerOrderInfoIds)
+                        .ThenInclude(d => d.Order)
+                            .ThenInclude(o => o.DesignerOrderInfoIds)
+                                .ThenInclude(d => d.User)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                            .ThenInclude(w => w.Service)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                           .ThenInclude(w => w.UserWorks)
+                               .ThenInclude(w => w.User)
+                    .FirstOrDefault(u => u.Email == User.Identity.Name);
+            }
+            else
+            {
+                user = _dbcontext.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.OrderInfos)
+                        .ThenInclude(o => o.Service)
+                    .Include(u => u.OrderInfos)
+                        .ThenInclude(o => o.DesignerOrderInfoIds)
+                            .ThenInclude(d => d.User)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                            .ThenInclude(w => w.Service)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                            .ThenInclude(w => w.UserWorks)
+                                .ThenInclude(w => w.User)
+                    .FirstOrDefault(u => u.Email == User.Identity.Name);
+            }
 
+            
             if (user != null)
             {
-                var model = new UserViewModel
-                {
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Tel = user.Tel
-                };
+                var model = ProfileViewModel.FillProfileViewModel(user, _dbcontext);
+                
                 return View(model);
             }
 
