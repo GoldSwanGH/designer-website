@@ -402,41 +402,24 @@ namespace designer_website.Controllers
             {
                 model.ChosenService = _dbcontext.Services.FirstOrDefault(s => s.ServiceId == initialModel.ServiceId);
             }
-            else
+
+            if (initialModel.FirstDesigner != null)
             {
-                return RedirectToAction("Index", "Home");
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == initialModel.FirstDesigner);
+
+                if (user != null)
+                {
+                    model.FirstDesigner = UserViewModel.ToUserViewModel(user);
+                }
             }
 
-            if (initialModel.Designers != null && initialModel.Designers.Count != 0)
+            if (initialModel.SecondDesigner != null)
             {
-                try
-                {
-                    var chosenDesigners = new List<UserViewModel>();
-                    foreach (var designer in initialModel.Designers)
-                    {
-                        var user = _dbcontext.Users.FirstOrDefault(u => u.Email == designer);
-                        if (user == null)
-                        {
-                            throw new Exception();
-                        }
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == initialModel.SecondDesigner);
 
-                        chosenDesigners.Add(new UserViewModel
-                        {
-                            Email = user.Email,
-                            FirstName = user.FirstName,
-                            LastName = user.LastName,
-                            Tel = user.Tel
-                        });
-                    }
-
-                    for (int i = 0; i < chosenDesigners.Count; i++)
-                    {
-                        model.ChosenDesigners[i] = chosenDesigners[i];
-                    }
-                }
-                catch
+                if (user != null)
                 {
-                    return RedirectToAction("Index", "Home");
+                    model.SecondDesigner = UserViewModel.ToUserViewModel(user);
                 }
             }
 
@@ -444,15 +427,10 @@ namespace designer_website.Controllers
                 u => u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
             
             var designersModels = new List<UserViewModel>();
+            
             foreach (var designer in designers)
             {
-                designersModels.Add( new UserViewModel
-                {
-                    Email = designer.Email,
-                    FirstName = designer.FirstName,
-                    LastName = designer.LastName,
-                    Tel = designer.Tel
-                } );
+                designersModels.Add(UserViewModel.ToUserViewModel(designer));
             }
 
             model.AllDesigners = designersModels;
@@ -466,45 +444,61 @@ namespace designer_website.Controllers
         {
             OrderInfo order = new OrderInfo();
 
-            List<User> designers = new List<User>();
+            var currentUser = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
 
-            try
+            if (currentUser == null)
             {
-                var client = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-
-                if (client == null)
-                {
-                    throw new Exception();
-                }
-
-                foreach (var designer in model.ChosenDesigners)
-                {
-                    var user = _dbcontext.Users.FirstOrDefault(u => u.Email == designer.Email);
-                    if (user == null)
-                    {
-                        throw new Exception();
-                    }
-                    designers.Add(user);
-                }
-                
-                foreach (var designer in designers)
-                {
-                    order.DesignerOrderInfoIds.Add(new DesignerOrderInfoId{ User = designer});
-                }
-                
-                order.OrderDescription = model.Description;
-                order.User = client;
-                order.Date = DateTime.Now;
-                order.Service = model.ChosenService;
-
-                _dbcontext.OrderInfos.Add(order);
-                _dbcontext.SaveChanges();
-            }
-            catch
-            {
-                ModelState.AddModelError("", "Ошибка добавления заказа.");
+                return View(model);
             }
 
+            order.User = currentUser;
+            order.Date = DateTime.Now;
+
+            var chosenService = _dbcontext.Services.FirstOrDefault(s => s.ServiceId == model.ChosenServiceId);
+
+            if (chosenService == null)
+            {
+                return View(model);
+            }
+
+            order.OrderDescription = model.Description;
+            order.Price = chosenService.DefaultPrice;
+
+            if (model.FirstDesigner != null)
+            {
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.FirstDesigner.userId);
+
+                if (user == null)
+                {
+                    return View(model);
+                }
+
+                var entry = new DesignerOrderInfoId();
+                entry.User = user;
+                entry.Order = order;
+                
+                order.DesignerOrderInfoIds.Add(entry);
+            }
+            
+            if (model.SecondDesigner != null)
+            {
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.SecondDesigner.userId);
+
+                if (user == null)
+                {
+                    return View(model);
+                }
+
+                var entry = new DesignerOrderInfoId();
+                entry.User = user;
+                entry.Order = order;
+                
+                order.DesignerOrderInfoIds.Add(entry);
+            }
+
+            _dbcontext.OrderInfos.Add(order);
+            _dbcontext.SaveChanges();
+            
             return RedirectToAction("Index","Home");
         }
         
