@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using designer_website.Models.EntityFrameworkModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace designer_website.Models.ViewModels
 {
@@ -16,7 +17,7 @@ namespace designer_website.Models.ViewModels
                 Work = userWork.Work
             };
 
-            var userWorksUserWorks = dbContext.UserWorks.Where(w => w.Work == userWork.Work);
+            var userWorksUserWorks = dbContext.UserWorks.Include(uw => uw.User).Where(w => w.Work == userWork.Work);
 
             if (userWorksUserWorks.Count() >= 1)
             {
