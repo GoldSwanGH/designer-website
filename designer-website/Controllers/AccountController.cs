@@ -507,8 +507,52 @@ namespace designer_website.Controllers
             _dbcontext.OrderInfos.Add(order);
             _dbcontext.DesignerOrderInfoIds.AddRange(designers);
             _dbcontext.SaveChanges();
+
+            return RedirectToAction("OrderEmailSending", new { orderId = order.OrderId });
+        }
+        
+        [Authorize]
+        [Route("Account/OrderEmailSending/{orderId:int}")]
+        public IActionResult OrderEmailSending(int orderId)
+        {
+            var user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            var order = _dbcontext.OrderInfos
+                .Include(o => o.Service).FirstOrDefault(o => o.OrderId == orderId);
             
-            return RedirectToAction("Index","Home");
+            if (user != null && order != null)
+            {
+                var to = new MailboxAddress(user.FirstName, user.Email);
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<p>Вы успешно создали заказ " + orderId + "</p><br/>" +
+                                       "<p>Услуга: " + order.Service.ServiceName + "</p><br/>" +
+                                       "<p>Стоимость: " + order.Price + "</p><br/>" +
+                                       "<p>Дата: " + order.Date.Date + "</p><br/>" +
+                                       "<p>Описание: " + order.OrderDescription + "</p>";
+                
+                bodyBuilder.TextBody = "Вы успешно создали заказ " + orderId + "\n" +
+                                       "Услуга: " + order.Service.ServiceName + "\n" +
+                                       "Стоимость: " + order.Price + "$\n" +
+                                       "Дата: " + order.Date.Date + "\n" +
+                                       "Описание: " + order.OrderDescription;
+        
+                var sendEmail = _emailSender
+                    .TryToSendMail(to, "Заказ успешно создан", bodyBuilder.ToMessageBody());
+
+                if (sendEmail == EmailResult.SendSuccess)
+                {
+                    ViewData["Text"] = "Вы успешно создали заказ. Письмо с деталями Вашего заказа было отправлено" +
+                                       "на Вашу почту";
+                }
+                else
+                {
+                    ViewData["Text"] = "Вы успешно создали заказ. Произошла ошибка при попытке отправить письмо " +
+                                       "с деталями Вашего заказа на Вашу почту";
+                }
+
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
         
         public IActionResult Works()
