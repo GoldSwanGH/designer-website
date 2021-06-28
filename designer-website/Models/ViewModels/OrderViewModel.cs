@@ -10,6 +10,8 @@ namespace designer_website.Models
 
         public Service ChosenService { get; set; }
         
+        public int? ChosenServiceId { get; set; }
+        
         public UserViewModel[] ChosenDesigners { get; set; }
         
         public List<UserViewModel> AllDesigners { get; set; }
