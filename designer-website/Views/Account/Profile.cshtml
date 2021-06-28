@@ -42,7 +42,7 @@
         @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new {id="infoForm", @class="container"}))
             {
                 <div class="validation invalid-feedback block_padding_low visible" asp-validation-summary="ModelOnly"></div>
-                @Html.DisplayFor(m => m.User.Email)
+                <span class="display-email site_theme_primary element_background_transparent no-hover">@Html.DisplayFor(m => m.User.Email)</span>
                 @Html.HiddenFor(m => m.User.Email)
                 
                 <div class="block_flex_column align-items-center">
