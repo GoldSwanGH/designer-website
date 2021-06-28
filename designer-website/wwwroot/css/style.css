@@ -539,6 +539,10 @@ html, body, main {
     padding-right: 30px;
 }
 
+.block_margin_none {
+    margin: 0;
+}
+
 .block_margin-top_normal {
     margin-top: 60px;
 }
@@ -553,10 +557,6 @@ html, body, main {
 
 .block_margin-bottom_small {
     margin-bottom: 20px;
-}
-
-.block_margin_none {
-    margin: 0;
 }
 
 .block_flex_column {
