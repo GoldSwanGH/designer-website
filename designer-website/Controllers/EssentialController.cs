@@ -20,28 +20,13 @@ namespace designer_website.Controllers
         public IActionResult Authors()
         {
             var authors = _dbcontext.Users
-                .Include(u => u.Role)
-                .Include(u => u.DesignerOrderInfoIds)
-                    .ThenInclude(d => d.Order)
-                        .ThenInclude(o => o.Service)
-                .Include(u => u.DesignerOrderInfoIds)
-                    .ThenInclude(d => d.Order)
-                        .ThenInclude(o => o.DesignerOrderInfoIds)
-                            .ThenInclude(d => d.User)
-                .Include(u => u.UserWorks)
-                    .ThenInclude(w => w.Work)
-                        .ThenInclude(w => w.Service)
-                .Include(u => u.UserWorks)
-                    .ThenInclude(w => w.Work)
-                        .ThenInclude(w => w.UserWorks)
-                            .ThenInclude(w => w.User)
                 .Where(u => u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
             
-            var model = new ProfileCollectionViewModel();
+            var model = new UserCollectionViewModel();
 
             foreach (var author in authors)
             {
-                model.ProfileList.Add(ProfileViewModel.FillProfileViewModel(author, _dbcontext));
+                model.UserList.Add(UserViewModel.ToUserViewModel(author));
             }
             
             return View(model);
