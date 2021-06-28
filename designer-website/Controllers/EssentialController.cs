@@ -32,7 +32,7 @@ namespace designer_website.Controllers
             return View(model);
         }
 
-        public IActionResult Author(ProfileViewModel model)
+        public IActionResult Author(UserViewModel model)
         {
             return View(model);
         }
