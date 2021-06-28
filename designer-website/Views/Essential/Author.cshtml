@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">
-        @foreach (var work in Model.Works)
+        @foreach (var work in Model.UserWorksList)
         {
             <div class="card element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
                 <button type="button" class="button button-overlay block_position_absolute block_zindex_normal" data-bs-toggle="modal" data-bs-target="#@work.Work.WorkId"></button>
@@ -25,7 +25,7 @@
             </div> 
         }
     </div>
-    @foreach (var work in Model.Works)
+    @foreach (var work in Model.UserWorksList)
     {
         <div class="modal modal-xl modal-overlay fade" id="@work.Work.WorkId" tabindex="-1" aria-labelledby="itemNameLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered card-overlay justify-content-center block_align_center block_zindex_high">
