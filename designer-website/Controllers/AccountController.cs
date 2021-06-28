@@ -450,8 +450,6 @@ namespace designer_website.Controllers
 
             model.AllDesigners = designersModels;
 
-            model.Services = _dbcontext.Services.ToList();
-            
             return View(model);
         }
         
