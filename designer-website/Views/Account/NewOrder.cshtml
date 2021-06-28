@@ -11,20 +11,21 @@
         <div class="card__item block_padding_none block_align_center">
             <h5 class="title-top element_background_secondary block_padding_normal">@Model.ChosenService.ServiceName</h5>
         </div>
-        <div class="validation invalid-feedback visible" asp-validation-summary="ModelOnly"></div>
+        
         <div class="main__content order__form block_margin_none block_padding_none p">
             @using (Html.BeginForm("NewOrder", "Account", FormMethod.Post, new {id="order-form", @class="p-5"}))
             {
-            <div class="block_flex_row justify-content-center block_column-gap_small">
+                <div class="validation invalid-feedback visible" asp-validation-summary="ModelOnly"></div>
+                <div class="block_flex_row justify-content-center block_column-gap_small">
                     @{ UserViewModel authorFirst = null; }
                     <div class="input-group mb-3">
                         <label class="input-group-text element_border_none site_theme_reversed">Автор</label>
-                        <select asp-for="FirstDesigner" required class="form-select site_theme_primary element_border-radius_normal element_border_none">
+                        <select asp-for="FirstDesignerId" required oninvalid="requiredField(this)" class="form-select site_theme_primary element_border-radius_normal element_border_none">
                             @if (Model.FirstDesigner != null)
                             {
                                 authorFirst = Model.FirstDesigner;
                                 var fullName = authorFirst.LastName + " " + authorFirst.FirstName;
-                                <option selected value="@authorFirst">@fullName</option>
+                                <option selected value="@authorFirst.userId">@fullName</option>
                             }
                             else
                             {
@@ -32,34 +33,35 @@
                             }
                             @foreach (var designer in Model.AllDesigners)
                             {
-                                if (designer != authorFirst)
+                                if (authorFirst == null || designer.userId != authorFirst.userId)
                                 {
                                     var fullName = designer.LastName + " " + designer.FirstName;
-                                    <option value="@designer">@fullName</option>
+                                    <option value="@designer.userId">@fullName</option>
                                 }
                             }
                         </select>
                     </div>
                     <div class="input-group mb-3">
                         <label class="input-group-text element_border_none site_theme_reversed">Автор</label>
-                        <select class="form-select site_theme_primary element_border-radius_normal element_border_none">
+                        <select asp-for="SecondDesignerId" class="form-select site_theme_primary element_border-radius_normal element_border_none">
                             @{ UserViewModel authorSecond = null;}
                             @if (Model.SecondDesigner != null)
                             {
                                 authorSecond = Model.SecondDesigner;
                                 var fullName = authorSecond.LastName + " " + authorSecond.FirstName;
-                                <option selected value="@authorSecond">@fullName</option>
+                                <option selected value="@authorSecond.userId">@fullName</option>
                             }
                             else
                             {
-                                <option selected>Не выбрано (опционально)</option>
+                                <option value="" selected>Не выбрано (опционально)</option>
                             }
                             @foreach (var designer in Model.AllDesigners)
                             {
-                                if (designer != authorFirst && designer != authorSecond)
+                                if ((authorFirst == null || designer.userId != authorFirst.userId)
+                                    && (authorSecond == null || designer.userId != authorSecond.userId))
                                 {
                                     var fullName = designer.LastName + " " + designer.FirstName;
-                                    <option value="@designer">@fullName</option>
+                                    <option value="@designer.userId">@fullName</option>
                                 }
                             }
                         </select>
@@ -82,6 +84,11 @@
                 {
                     Model.ChosenServiceId = Model.ChosenService.ServiceId;
                 }
+                @Html.HiddenFor(m => m.ChosenServiceId)
+                @Html.HiddenFor(m => m.ChosenService)
+                @Html.HiddenFor(m => m.FirstDesigner)
+                @Html.HiddenFor(m => m.SecondDesigner)
+                @Html.HiddenFor(m => m.AllDesigners)
                 <div class="block_flex_row justify-content-center align-items-center">
                     <div class="block_flex_column justify-content-end block_padding_normal">
                         <input form="order-form" type="submit" value="Заказать" class="card-title btn btn-secondary btn-lg element_border-radius_smooth block_align_right text_theme_thin"/>
