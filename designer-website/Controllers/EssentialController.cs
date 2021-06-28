@@ -39,7 +39,10 @@ namespace designer_website.Controllers
 
         public IActionResult Market()
         {
-            return View();
+            var model = new ServiceCollectionViewModel();
+            model.Services = _dbcontext.Services.ToList();
+
+            return View(model);
         }
     }
 }
