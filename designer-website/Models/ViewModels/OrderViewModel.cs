@@ -14,7 +14,11 @@ namespace designer_website.Models
         
         public UserViewModel FirstDesigner { get; set; }
         
+        public int? FirstDesignerId { get; set; }
+        
         public UserViewModel SecondDesigner { get; set; }
+        
+        public int? SecondDesignerId { get; set; }
         
         public List<UserViewModel> AllDesigners { get; set; }
 
