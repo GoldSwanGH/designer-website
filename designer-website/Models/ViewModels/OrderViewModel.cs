@@ -10,7 +10,7 @@ namespace designer_website.Models
 
         public Service ChosenService { get; set; }
         
-        public List<UserViewModel> ChosenDesigners { get; set; }
+        public UserViewModel[] ChosenDesigners { get; set; }
         
         public List<UserViewModel> AllDesigners { get; set; }
 
@@ -21,7 +21,7 @@ namespace designer_website.Models
         public OrderViewModel()
         {
             ChosenService = new Service();
-            ChosenDesigners = new List<UserViewModel>();
+            ChosenDesigners = new UserViewModel[2];
             AllDesigners = new List<UserViewModel>();
         }
     }
