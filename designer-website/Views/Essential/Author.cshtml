@@ -1,7 +1,8 @@
-﻿@model UserViewModel
+﻿@using designer_website.Models.ViewModels
+@model ProfileViewModel
 
 @{
-    ViewData["Title"] = Model.LastName + " " + Model.FirstName.Substring(0,1) + ".";
+    ViewData["Title"] = Model.User.LastName + " " + Model.User.FirstName.Substring(0,1) + ".";
 }
 
 
@@ -9,26 +10,31 @@
     <div class="main__content block_flex_row justify_content_center block_align_center block_margin-top_normal">
         <div class="card author__card site_theme_reversed block_flex_row block_column-gap_small justify-content-start align-items-center">
             <img class="img img_stretch element_size_normal element_offset-left_normal element_border_circle" src="~/static-pic/photos/author.jpg" alt="">
-            <span class="">@(Model.LastName + " " + Model.FirstName)</span>
+            <span class="">@(Model.User.LastName + " " + Model.User.FirstName)</span>
         </div>
     </div>
     <div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">
-        <div class="card element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
-            <button type="button" class="button button-overlay block_position_absolute block_zindex_normal" data-bs-toggle="modal" data-bs-target="#itemID"></button>
-            <img src="~/static-pic/photos/webpic.png" class="card-img element_border-radius_smooth" alt="">
-            <div class="card-img-overlay card__item block_zindex_low">
-                <h5 class="card-title element_background_secondary-normal block_padding_normal">Очень крутой дизайн</h5>
-            </div>
-        </div>
+        @foreach (var work in Model.Works)
+        {
+            <div class="card element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
+                <button type="button" class="button button-overlay block_position_absolute block_zindex_normal" data-bs-toggle="modal" data-bs-target="#@work.Work.WorkId"></button>
+                <img src="~/static-pic/photos/webpic.png" class="card-img element_border-radius_smooth" alt="">
+                <div class="card-img-overlay card__item block_zindex_low">
+                    <h5 class="card-title element_background_secondary-normal block_padding_normal">@work.Work.WorkName</h5>
+                </div>
+            </div> 
+        }
     </div>
-    <div class="modal modal-xl modal-overlay fade" id="itemID" tabindex="-1" aria-labelledby="itemNameLabel" aria-hidden="true">
+    @foreach (var work in Model.Works)
+    {
+        <div class="modal modal-xl modal-overlay fade" id="@work.Work.WorkId" tabindex="-1" aria-labelledby="itemNameLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered card-overlay justify-content-center block_align_center block_zindex_high">
             <div class="modal-content align-items-center element_border_none element_background_transparent">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div id="carousel-@work.Work.WorkId" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carousel-@work.Work.WorkId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carousel-@work.Work.WorkId" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carousel-@work.Work.WorkId" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -41,19 +47,33 @@
                             <img src="~/static-pic/photos/webpic.png" class="d-block w-100 element_border-radius_smooth" alt="...">
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@work.Work.WorkId" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-@work.Work.WorkId" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
                     <div class="card-img-overlay card__item">
-                        <h5 class="card-title element_background_secondary-normal block_padding_normal">Очень крутой дизайн</h5>
+                        <h5 class="card-title element_background_secondary-normal block_padding_normal">@work.Work.WorkName</h5>
                     </div>
                     <div class="card-img-overlay card__item block_align_right block_flex_column justify-content-end block_padding_normal block_justify_bottom block_zindex_low">
-                        <form asp-controller="Account" asp-action="NewOrder"><button type="submit" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin">Заказать</button></form>
+                        <button type="submit" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin">
+                            @{
+                                var chosen = new NewOrderInitialModel();
+                                chosen.ServiceId = work.Work.ServiceId;
+                                for (var i = 0; i < 2; i++)
+                                {
+                                    if (i < work.Designers.Count)
+                                    {
+                                        chosen.Designers.Add(work.Designers[i].Email);
+                                    }
+                                }
+                            }
+                            @Html.ActionLink("", "NewOrder", "Account", chosen, new {@class = "button button-overlay block_position_absolute"}) 
+                            Заказать
+                        </button>
                     </div>
                 </div>
                 <div class="card__controls block_position_absolute element_background_primary element_border_controls"></div>
@@ -61,4 +81,5 @@
             </div>    
         </div>
     </div>
+    }
 </div>
