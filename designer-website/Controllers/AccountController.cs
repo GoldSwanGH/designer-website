@@ -2,27 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using designer_website.Filters;
 using designer_website.Interfaces;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
 using designer_website.Models.ViewModels;
-using MailKit.Net.Imap;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using Org.BouncyCastle.Crypto.Digests;
 using BC = BCrypt.Net.BCrypt;
 
 namespace designer_website.Controllers
@@ -78,7 +72,8 @@ namespace designer_website.Controllers
             
             return View(registerViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
-
+        
+        [AnonymousOnlyFilter]
         public IActionResult SendConfirmationLetter(User user)
         {
             User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == user.Email);
@@ -88,7 +83,7 @@ namespace designer_website.Controllers
             if (sameUser == null)
             {
                 string token = _tokenizer.GetRandomToken();
-                string url = "https://localhost:44357/Account/EmailConfirmation/" + token;
+                string url = "https://" + HttpContext.Request.Host + "/Account/EmailConfirmation/" + token;
                 user.Token = token;
 
                 var to = new MailboxAddress(user.FirstName, user.Email);
@@ -186,6 +181,7 @@ namespace designer_website.Controllers
         }
 
         [HttpPost]
+        [AnonymousOnlyFilter]
         public IActionResult Recovery(UserViewModel recoveryViewModel)
         {
             ViewData["Post"] = true;
@@ -193,7 +189,7 @@ namespace designer_website.Controllers
             if (sameUser != null)
             {
                 string token = _tokenizer.GetRandomToken();
-                string url = "https://localhost:44357/Account/PasswordChange/" + token;
+                string url = "https://" + HttpContext.Request.Host + "/Account/PasswordChange/" + token;
 
                 var to = new MailboxAddress(sameUser.FirstName, sameUser.Email);
                 var bodyBuilder = new BodyBuilder();
@@ -223,6 +219,7 @@ namespace designer_website.Controllers
             {
                 ViewData["Post"] = true;
                 ViewData["Text"] = "Ошибка. Неверная ссылка.";
+                return View();
             }
             else
             {
@@ -236,6 +233,7 @@ namespace designer_website.Controllers
         }
         
         [HttpPost]
+        [AnonymousOnlyFilter]
         public IActionResult PasswordChange(PasswordChangeViewModel passwordChangeViewModel)
         {
             var user = _dbcontext.Users.FirstOrDefault(u => u.Email == passwordChangeViewModel.Email);
@@ -384,16 +382,9 @@ namespace designer_website.Controllers
 
             return View(model);
         }
-
         
-        [Authorize]
-        public IActionResult Orders()
-        {
-            return View();
-        } 
-        
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public IActionResult NewOrder(NewOrderInitialModel initialModel)
         {
             var model = new OrderViewModel();
@@ -438,8 +429,8 @@ namespace designer_website.Controllers
             return View(model);
         }
         
-        [Authorize]
         [HttpPost]
+        [Authorize]
         public IActionResult NewOrder(OrderViewModel model)
         {
             OrderInfo order = new OrderInfo();
@@ -554,12 +545,7 @@ namespace designer_website.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        
-        public IActionResult Works()
-        {
-            return View();
-        }
-        
+
         private async Task Authenticate(User user)
         {
             // создаем claims

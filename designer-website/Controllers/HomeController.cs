@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
-using Microsoft.AspNetCore.Authorization;
 
 namespace designer_website.Controllers
 {
@@ -26,11 +21,6 @@ namespace designer_website.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        
         public IActionResult About()
         {
             return Redirect("Index#info");
