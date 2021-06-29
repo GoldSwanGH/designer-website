@@ -1,0 +1,365 @@
+{
+  "formatVersion": 3,
+  "id": "root",
+  "ideas": {
+    "1": {
+      "title": "Home Page",
+      "id": 1,
+      "attr": {
+        "position": [
+          -107,
+          -24,
+          1
+        ],
+        "style": {
+          "width": 72
+        }
+      }
+    },
+    "2": {
+      "title": "Profile",
+      "id": 3,
+      "attr": {
+        "position": [
+          61,
+          -24,
+          1
+        ]
+      },
+      "ideas": {
+        "21": {
+          "title": "Orders",
+          "id": 4,
+          "attr": {
+            "position": [
+              146,
+              -4,
+              5
+            ],
+            "style": {
+              "backgroundColor": "#FFFF00"
+            }
+          }
+        },
+        "31": {
+          "title": "Works",
+          "id": 18,
+          "attr": {
+            "position": [
+              144,
+              96,
+              3
+            ],
+            "style": {
+              "backgroundColor": "#00FFFF"
+            }
+          }
+        },
+        "10.5": {
+          "title": "User Information",
+          "id": 17,
+          "attr": {
+            "position": [
+              126,
+              -78,
+              4
+            ],
+            "style": {
+              "backgroundColor": "#FFFF00"
+            }
+          }
+        }
+      }
+    },
+    "4": {
+      "title": "Marketplace",
+      "id": 10,
+      "attr": {
+        "position": [
+          -109,
+          47,
+          1
+        ]
+      },
+      "ideas": {}
+    },
+    "5": {
+      "title": "Authors",
+      "id": 12,
+      "attr": {
+        "note": {
+          "index": 6,
+          "text": "All works for each designer"
+        },
+        "position": [
+          -369,
+          52,
+          1
+        ]
+      },
+      "ideas": {
+        "1": {
+          "title": "Author",
+          "id": 15,
+          "attr": {
+            "position": [
+              67,
+              101,
+              1
+            ],
+            "style": {
+              "backgroundColor": "#FF9900"
+            }
+          }
+        }
+      }
+    },
+    "6": {
+      "title": "New Order",
+      "id": 13,
+      "attr": {
+        "position": [
+          -176,
+          170,
+          1
+        ],
+        "style": {
+          "backgroundColor": "#993366",
+          "text": {
+            "color": "#FFFFFF"
+          }
+        }
+      },
+      "ideas": {
+        "1": {
+          "title": "Order Confirmation",
+          "id": 24,
+          "attr": {
+            "style": {
+              "backgroundColor": "#FF99CC",
+              "text": {
+                "color": "#333333"
+              }
+            },
+            "position": [
+              140,
+              -3,
+              1
+            ],
+            "parentConnector": {
+              "color": "#FF00FF"
+            }
+          }
+        }
+      }
+    },
+    "7": {
+      "title": "LogIn",
+      "id": 19,
+      "attr": {
+        "position": [
+          -105,
+          -124,
+          1
+        ],
+        "style": {
+          "backgroundColor": "#993366",
+          "text": {
+            "color": "#FFFFFF"
+          }
+        }
+      }
+    },
+    "8": {
+      "title": "SignUp",
+      "id": 20,
+      "attr": {
+        "position": [
+          -191,
+          -123,
+          1
+        ],
+        "style": {
+          "backgroundColor": "#993366",
+          "text": {
+            "color": "#FFFFFF"
+          }
+        }
+      },
+      "ideas": {
+        "-10": {
+          "title": "Email Confirmation",
+          "id": 22,
+          "attr": {
+            "position": [
+              109,
+              -2,
+              1
+            ],
+            "style": {
+              "backgroundColor": "#FF99CC",
+              "text": {
+                "color": "#333333"
+              }
+            },
+            "parentConnector": {
+              "color": "#FF00FF"
+            }
+          }
+        }
+      }
+    },
+    "9": {
+      "title": "Password Recovey",
+      "id": 21,
+      "attr": {
+        "position": [
+          -20,
+          -157,
+          1
+        ],
+        "style": {
+          "backgroundColor": "#993366",
+          "text": {
+            "color": "#FFFFFF"
+          }
+        }
+      },
+      "ideas": {
+        "1": {
+          "title": "Email Link Sent",
+          "id": 23,
+          "attr": {
+            "position": [
+              1,
+              -60,
+              1
+            ],
+            "style": {
+              "backgroundColor": "#FF99CC",
+              "text": {
+                "color": "#333333"
+              }
+            },
+            "parentConnector": {
+              "color": "#FF00FF"
+            }
+          }
+        }
+      }
+    }
+  },
+  "title": "Home Page",
+  "links": [
+    {
+      "ideaIdFrom": 3,
+      "ideaIdTo": 1,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "from"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 1,
+      "ideaIdTo": 10,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 15,
+      "ideaIdTo": 13,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 10,
+      "ideaIdTo": 13,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 1,
+      "ideaIdTo": 19,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 1,
+      "ideaIdTo": 20,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 20,
+      "ideaIdTo": 19,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "from"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 17,
+      "ideaIdTo": 21,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 19,
+      "ideaIdTo": 21,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 1,
+      "ideaIdTo": 12,
+      "attr": {
+        "style": {
+          "color": "#707070",
+          "lineStyle": "solid",
+          "arrow": "to"
+        }
+      }
+    }
+  ]
+}
