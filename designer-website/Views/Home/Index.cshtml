@@ -1,10 +1,39 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Главная";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Sign up @Html.ActionLink("NOW", "Register", "Account")</p> <br />
-    <p>@Html.ActionLink("About us", "About", "Home")</p> <br />
-    <p>@Html.ActionLink("Login", "Login", "Account")</p> <br />
+    <div class="anchor main__title-screen">
+        <span class="block_justify_center block_position_absolute text_theme_bold text_size_title text_theme_spaced">AGENCY</span>
+        <img class="main__title-icon element_opacity_middle" src="~/static-pic/icons/TitleBack.svg" alt="">
+        <span class="main__welcome site_font_thin text_theme_spaced">
+            <a href="#specials" class="link_clean">
+                <svg class="icon_size_large icon_transition_down bi bi-chevron-compact-down script_animate" viewBox="0 0 16 16">
+                    <path fill="var(--primary-color)" fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"/>
+                </svg>
+            </a>
+        </span>
+    </div>
+    <div id="specials" class="anchor main__title-screen">
+        <img class="main__title-icon block_justify_center element_opacity_middle" src="~/static-pic/icons/SpecialTitle.svg" alt="">
+        <div class="main__content block_position_absolute block_flex_column">
+            @* Space for specials *@
+        </div>
+    </div>
+    <div id="info" class="anchor footer footer-position site_theme_primary block_flex_column align-items-center">
+        <div class="footer__item block_justify_bottom block_flex_column">
+            <div class="main__content block_justify_bottom mb-3">
+                <a href="mailto:user@example.org" class="btn btn-outline-primary">Напишите нам на почту</a>
+                <a href="tel:+70000000000" class="btn btn-outline-primary">Позвоните нам</a>
+            </div>
+            <p class="footer__copyright mb-3 block_justify_bottom">
+                <span>©2021 Agency |</span>
+                <span>
+                    Authors:
+                    <a href="https://github.com/GoldSwanGH">github/GoldSwanGH</a>,
+                    <a href="https://github.com/amaterasuzxc">github/amaterasuzxc</a>
+                </span>
+            </p>
+        </div>
+    </div>
 </div>

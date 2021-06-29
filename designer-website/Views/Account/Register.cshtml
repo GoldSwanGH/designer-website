@@ -1,52 +1,66 @@
 ﻿@{
-    ViewData["Title"] = "Sign up";
+    ViewData["Title"] = "Регистрация";
 }
 @using static BCrypt.Net.BCrypt
 @using BCrypt.Net
+@using designer_website.Interfaces
 @model RegisterViewModel;
 
-<div class="text-center">
-    <h1 class="display-4">Sign up now!</h1>
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
-    {
-        <div class="validation" asp-validation-summary="ModelOnly"></div>
-        @Html.LabelFor(m => m.Email)
-        <br />
-        @Html.EditorFor(m => m.Email)
-        @Html.ValidationMessageFor(m => m.Email)
-        <br /><br />
-        
-        @Html.LabelFor(m => m.Password)
-        <br />
-        @Html.EditorFor(m => m.Password)
-        @Html.ValidationMessageFor(m => m.Password)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.ConfirmPassword)
-        <br />
-        @Html.EditorFor(m => m.ConfirmPassword)
-        @Html.ValidationMessageFor(m => m.ConfirmPassword)
-        <br /><br />
-
-        @Html.LabelFor(m => m.FirstName)
-        <br />
-        @Html.EditorFor(m => m.FirstName)
-        @Html.ValidationMessageFor(m => m.FirstName)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.LastName)
-        <br />
-        @Html.EditorFor(m => m.LastName)
-        @Html.ValidationMessageFor(m => m.LastName)
-        <br /><br />
-              
-        @Html.LabelFor(m => m.Tel)
-        <br />
-        @Html.EditorFor(m => m.Tel)
-        @Html.ValidationMessageFor(m => m.Tel)
-        <br /><br />
-
-        <input type="submit" value="Sign Up"/>
-
-    }
+<div class="anchor block_flex_column">
+    <div class="main__content text-center block_scroll_enable block_scrollbar_hide">
+        <h1 class="display-4 block_margin-bottom_small">Регистрация</h1>
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new {@class="container"}))
+        {
+            <br/>
+            <div class="validation invalid-feedback visible" asp-validation-summary="ModelOnly"></div>
+            <div class="row g-3">
+                <div class="col-md-4 text-left">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="user-info form-control site_theme_primary element_border_primary" placeholder="user@@example.org">
+                    <div class="invalid-feedback visible">
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </div>
+                </div>
+                <div class="col-md-4 text-left">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="user-info form-control site_theme_primary element_border_primary" placeholder="••••••••">
+                    <div class="invalid-feedback visible">
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                </div>
+                <div class="col-md-4 text-left">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" class="user-info form-control site_theme_primary element_border_primary" placeholder="">
+                    <div class="invalid-feedback visible">
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4 text-left">
+                    <label asp-for="Tel" class="form-label"></label>
+                    <input asp-for="Tel" class="user-info form-control site_theme_primary element_border_primary" placeholder="+71112223344">
+                    <div class="invalid-feedback visible">
+                        @Html.ValidationMessageFor(m => m.Tel)
+                    </div>
+                </div>
+                <div class="col-md-4 text-left">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="user-info form-control site_theme_primary element_border_primary" placeholder="">
+                    <div class="invalid-feedback visible">
+                        @Html.ValidationMessageFor(m => m.FirstName)
+                    </div>
+                </div>
+                <div class="col-md-4 text-left">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="user-info form-control site_theme_primary element_border_primary" placeholder="(опционально)">
+                    <div class="invalid-feedback visible">
+                        @Html.ValidationMessageFor(m => m.LastName)
+                    </div>
+                </div>
+            </div>
+    
+            <input type="submit" value="Зарегистрироваться" class="btn btn-fill-secondary block_margin-top_small"/>
+        }
+    </div>
 </div>

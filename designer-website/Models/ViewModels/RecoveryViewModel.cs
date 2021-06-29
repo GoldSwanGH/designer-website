@@ -9,7 +9,7 @@ namespace designer_website.Models
     {
         [Required(ErrorMessage = "Это обязательное поле.")]
         [EmailAddress(ErrorMessage = "Email адрес введен некорректно.")]
-        [DisplayName("Email адрес")]
+        [DisplayName("Почта")]
         public override string Email { get; set; }
     }
 }

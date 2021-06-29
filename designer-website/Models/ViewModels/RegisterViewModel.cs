@@ -16,30 +16,30 @@ namespace designer_website.Models
     {
         [Required(ErrorMessage = "Это обязательное поле.")]
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
-        [DisplayName("Email address")]
+        [DisplayName("Почта")]
         [CheckEmailAvailability(false)]
         public override string Email { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Text)]
-        [DisplayName("First name")]
+        [DisplayName("Имя")]
         public override string FirstName { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
-        [DisplayName("Password")]
+        [DisplayName("Пароль")]
         [StringLength(50, MinimumLength = 8, ErrorMessage = "Длина пароля должна быть от 8 до 50 символов")]
-        public override string Password { get; set; }
+        public string Password { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
-        [DisplayName("Confirm password")]
+        [DisplayName("Подтверждение пароля")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public override string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Это обязательное поле.")]
         [Phone(ErrorMessage = "Номер телефона введен неправильно.")]
-        [DisplayName("Phone number")]
+        [DisplayName("Телефон")]
         public override string Tel { get; set; }
 
         public User ToUser()

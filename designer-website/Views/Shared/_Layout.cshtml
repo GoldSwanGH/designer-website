@@ -1,67 +1,63 @@
 ﻿
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - designer_website</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="~/static-pic/icons/siteIcon.svg"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="~/css/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="~/js/functions.js"></script>
 </head>
-<body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">designer_website</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                    <li class="nav-item">
-                        
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <p class="nav-link text-dark">Hello, <a asp-area="" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a></p>
-                            }
-                            else
-                            {
-                                <p class="nav-link text-dark">Guest! Please <a asp-area="" asp-controller="Account" asp-action="Login">sign in!</a></p>
-                            }
-                        
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                        </li>
-                    }
-                </ul>
-            </div>
+<body class="site_font_letters">
+<header class="header header-position block_position_fixed site_theme_primary element_background_secondary">
+    <div class="header__item">
+        <div class="header__item-content dropdown">
+            <a href="#" data-bs-toggle="dropdown">
+                <svg class="icon_size_normal icon_color_primary menu_expand script_animate" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z" fill="#AED6F1"/>
+                </svg>
+            </a>
+            <ul class="dropdown-menu left site_theme_reversed element_shadow_smooth element_border-radius_normal script_animate">
+                <li><a asp-controller="Home" asp-action="Index" class="dropdown-item site_theme_reversed icon_color_secondary">Главная</a></li>
+                <li><a asp-controller="Essential" asp-action="Authors" class="dropdown-item site_theme_reversed icon_color_secondary">Авторы</a></li>
+                <li><a asp-controller="Essential" asp-action="Market" class="dropdown-item site_theme_reversed icon_color_secondary">Маркетплейс</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a asp-controller="Home" asp-action="About" class="dropdown-item site_theme_reversed icon_color_secondary">О нас</a></li>
+            </ul>
         </div>
-    </nav>
-</header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2021 - designer_website - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+    <div class="header__item block_flex_row block_column-gap_small align-items-center">
+        @if (User.Identity.IsAuthenticated) {<span>Добро пожаловать, @User.Identity.Name!</span>}
+        <div class="header__item-content dropdown">
+            <a href="#" data-bs-toggle="dropdown">
+                <svg class="icon_size_normal icon_color_primary element_border-radius_normal script_animate" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3H5C3.89 3 3 3.9 3 5ZM15 9C15 10.66 13.66 12 12 12C10.34 12 9 10.66 9 9C9 7.34 10.34 6 12 6C13.66 6 15 7.34 15 9ZM6 17C6 15 10 13.9 12 13.9C14 13.9 18 15 18 17V18H6V17Z" fill="#AED6F1"/>
+                </svg>
+            </a>
+            <ul class="dropdown-menu right site_theme_reversed element_shadow_smooth element_border-radius_normal script_animate">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a asp-controller="Account" asp-action="Profile" class="dropdown-item site_theme_reversed icon_color_secondary">Профиль</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a asp-controller="Account" asp-action="Logout" class="dropdown-item site_theme_reversed icon_color_secondary">Выйти</a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="Account" asp-action="Login" class="dropdown-item site_theme_reversed icon_color_secondary">Войти</a></li>
+                    <li><a asp-controller="Account" asp-action="Register" class="dropdown-item site_theme_reversed icon_color_secondary">Зарегистрироваться</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="main site_theme_primary">
+    @RenderBody()
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/script.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

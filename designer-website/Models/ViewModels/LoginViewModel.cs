@@ -8,19 +8,13 @@ namespace designer_website.Models
     {
         [Required(ErrorMessage = "Это обязательное поле.")]
         [EmailAddress(ErrorMessage = "Email адрес введен неправильно.")]
-        [DisplayName("Email address")]
+        [DisplayName("Почта")]
         [CheckEmailAvailability(true)]
         public override string Email { get; set; }
         
         [Required(ErrorMessage = "Это обязательное поле.")]
         [DataType(DataType.Password)]
-        [DisplayName("Password")]
-        public override string Password { get; set; }
-        
-        [Required(ErrorMessage = "Это обязательное поле.")]
-        [DataType(DataType.Password)]
-        [DisplayName("Confirm password")]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public override string ConfirmPassword { get; set; }
+        [DisplayName("Пароль")]
+        public string Password { get; set; }
     }
 }

@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using designer_website.Filters;
 using designer_website.Interfaces;
 using designer_website.Models;
 using designer_website.Models.EntityFrameworkModels;
-using MailKit.Net.Imap;
+using designer_website.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using Org.BouncyCastle.Crypto.Digests;
 using BC = BCrypt.Net.BCrypt;
 
 namespace designer_website.Controllers
@@ -37,10 +33,10 @@ namespace designer_website.Controllers
         public AccountController(MSDBcontext dbcontext, ILogger<AccountController> logger, ISmtpEmailSender emailSender,
             ITokenizer tokenizer, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            this._dbcontext = dbcontext;
-            this._logger = logger;
-            this._emailSender = emailSender;
-            this._tokenizer = tokenizer;
+            _dbcontext = dbcontext;
+            _logger = logger;
+            _emailSender = emailSender;
+            _tokenizer = tokenizer;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -71,27 +67,23 @@ namespace designer_website.Controllers
                     return View(registerViewModel);
                 }
 
-                return RedirectToAction("EmailConfirmation", user);
-                
-                /*
-                _dbcontext.Users.Add(user);
-                await _dbcontext.SaveChangesAsync();
-
-                await Authenticate(user);
-                
-                return RedirectToAction("UserCreated"); */
+                return RedirectToAction("SendConfirmationLetter", user);
             }   
             
             return View(registerViewModel); // Если валидация не прошла, возвращаемся на страницу регистрации.
         }
         
-        public IActionResult EmailConfirmation(User user)
+        [AnonymousOnlyFilter]
+        public IActionResult SendConfirmationLetter(User user)
         {
             User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == user.Email);
+            
+            int responceId;
+            
             if (sameUser == null)
             {
                 string token = _tokenizer.GetRandomToken();
-                string url = "https://localhost:44357/Account/EmailConfirmation/" + token;
+                string url = "https://" + HttpContext.Request.Host + "/Account/EmailConfirmation/" + token;
                 user.Token = token;
 
                 var to = new MailboxAddress(user.FirstName, user.Email);
@@ -106,13 +98,15 @@ namespace designer_website.Controllers
                 {
                     if (user.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer"))
                     {
-                        ViewData["Text"] = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
-                                           "отправлено на почту дизайнера.";
+                        responceId = 1;
+                        //text = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
+                                           //"отправлено на почту дизайнера.";
                     }
                     else
                     {
-                        ViewData["Text"] = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
-                                           "пройдите по ссылке из письма, которое мы отправили Вам на почту.";
+                        responceId = 2;
+                        //text = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
+                                           //"пройдите по ссылке из письма, которое мы отправили Вам на почту.";
                     }
                     
                     _dbcontext.Users.Add(user);
@@ -120,14 +114,42 @@ namespace designer_website.Controllers
                 }
                 else
                 {
-                    ViewData["Text"] = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
-                                       "и попробуйте пройти регистрацию еще раз.";
+                    responceId = 3;
+                    //text = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
+                                       //"и попробуйте пройти регистрацию еще раз.";
                 }
             }
             else
             {
-                ViewData["Text"] = "Ошибка при отправке письма.";
+                responceId = 4;
+                //text = "Ошибка при отправке письма.";
             }
+            
+            return RedirectToAction("EmailConfirmation", "Account", new { id = responceId});
+        }
+        
+        [Route("Account/EmailConfirmation/{responseId:int}")]
+        public IActionResult EmailConfirmation(int responseId)
+        {
+            switch (responseId)
+            {
+                case 1:
+                    ViewData["Text"] = "Аккаунт дизайнера был создан, письмо с подтверждением регистрации было " + 
+                                        "отправлено на почту дизайнера.";
+                    break;
+                case 2:
+                    ViewData["Text"] = "Ваш аккаунт был создан, чтобы подтвердить регистрацию и активировать аккаунт, " +
+                                        "пройдите по ссылке из письма, которое мы отправили Вам на почту.";
+                    break;
+                case 3:
+                    ViewData["Text"] = "Ошибка при отправке письма, проверьте введенную Вами при регистрации почту " + 
+                                        "и попробуйте пройти регистрацию еще раз.";
+                    break;
+                default:
+                    ViewData["Text"] = "Ошибка при отправке письма.";
+                    break;
+            }
+        
             return View();
         }
         
@@ -157,25 +179,25 @@ namespace designer_website.Controllers
             ViewData["Post"] = false;
             return View();
         }
-        
-        [AnonymousOnlyFilter]
+
         [HttpPost]
-        public IActionResult Recovery(RecoveryViewModel recoveryViewModel)
+        [AnonymousOnlyFilter]
+        public IActionResult Recovery(UserViewModel recoveryViewModel)
         {
             ViewData["Post"] = true;
             User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == recoveryViewModel.Email);
             if (sameUser != null)
             {
                 string token = _tokenizer.GetRandomToken();
-                string url = "https://localhost:44357/Account/PasswordChange/" + token;
+                string url = "https://" + HttpContext.Request.Host + "/Account/PasswordChange/" + token;
 
                 var to = new MailboxAddress(sameUser.FirstName, sameUser.Email);
                 var bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы восстановить пароль:</p><br /><a href=\"" 
+                bodyBuilder.HtmlBody = "<p>Пройдите по ссылке, чтобы изменить пароль:</p><br /><a href=\"" 
                                        + url + "\">" + url + "</a>";
-                bodyBuilder.TextBody = "Пройдите по ссылке, чтобы восстановить пароль:\n" + url;
+                bodyBuilder.TextBody = "Пройдите по ссылке, чтобы изменить пароль:\n" + url;
             
-                var sendEmail = _emailSender.TryToSendMail(to, "Восстановление пароля", bodyBuilder.ToMessageBody());
+                var sendEmail = _emailSender.TryToSendMail(to, "Изменение пароля", bodyBuilder.ToMessageBody());
 
                 if (sendEmail == EmailResult.SendSuccess)
                 {
@@ -197,13 +219,11 @@ namespace designer_website.Controllers
             {
                 ViewData["Post"] = true;
                 ViewData["Text"] = "Ошибка. Неверная ссылка.";
+                return View();
             }
             else
             {
                 ViewData["Post"] = false;
-                
-                user.Token = null;
-                _dbcontext.SaveChanges();
             }
 
             var passwordChangeViewModel = new PasswordChangeViewModel();
@@ -213,6 +233,7 @@ namespace designer_website.Controllers
         }
         
         [HttpPost]
+        [AnonymousOnlyFilter]
         public IActionResult PasswordChange(PasswordChangeViewModel passwordChangeViewModel)
         {
             var user = _dbcontext.Users.FirstOrDefault(u => u.Email == passwordChangeViewModel.Email);
@@ -220,6 +241,7 @@ namespace designer_website.Controllers
             if (user != null)
             {
                 user.Password = BC.HashPassword(passwordChangeViewModel.Password);
+                user.Token = null;
                 _dbcontext.SaveChanges();
                 
                 ViewData["Text"] = "Пароль успешно сменен. Пожалуйста, войдите в учетную запись с новым паролем.";
@@ -260,6 +282,10 @@ namespace designer_website.Controllers
                 
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
+            else
+            {
+                ModelState.AddModelError("", "Неопознанная ошибка модели");
+            }
             return View();
         }
 
@@ -275,21 +301,264 @@ namespace designer_website.Controllers
             return View();
         }
         
+        [HttpGet]
         [Authorize]
-        public IActionResult Manage()
+        public IActionResult Profile()
         {
-            return View();
+            User user;
+            if (User.IsInRole("Designer"))
+            {
+                user = _dbcontext.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.DesignerOrderInfoIds)
+                        .ThenInclude(d => d.Order)
+                            .ThenInclude(o => o.Service)
+                    .Include(u => u.DesignerOrderInfoIds)
+                        .ThenInclude(d => d.Order)
+                            .ThenInclude(o => o.DesignerOrderInfoIds)
+                                .ThenInclude(d => d.User)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                            .ThenInclude(w => w.Service)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                           .ThenInclude(w => w.UserWorks)
+                               .ThenInclude(w => w.User)
+                    .FirstOrDefault(u => u.Email == User.Identity.Name);
+            }
+            else
+            {
+                user = _dbcontext.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.OrderInfos)
+                        .ThenInclude(o => o.Service)
+                    .Include(u => u.OrderInfos)
+                        .ThenInclude(o => o.DesignerOrderInfoIds)
+                            .ThenInclude(d => d.User)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                            .ThenInclude(w => w.Service)
+                    .Include(u => u.UserWorks)
+                        .ThenInclude(w => w.Work)
+                            .ThenInclude(w => w.UserWorks)
+                                .ThenInclude(w => w.User)
+                    .FirstOrDefault(u => u.Email == User.Identity.Name);
+            }
+
+            
+            if (user != null)
+            {
+                var model = ProfileViewModel.FillProfileViewModel(user, _dbcontext);
+                
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public IActionResult Profile(ProfileViewModel model)
+        {
+            User user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+
+            if (user != null)
+            {
+                if (model.User.FirstName != user.FirstName)
+                {
+                    user.FirstName = model.User.FirstName;
+                }
+                if (model.User.LastName != user.LastName)
+                {
+                    user.LastName = model.User.LastName;
+                }
+                if (model.User.Tel != user.Tel)
+                {
+                    user.Tel = model.User.Tel;
+                }
+
+                _dbcontext.SaveChanges();
+            }
+
+            return View(model);
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public IActionResult NewOrder(NewOrderInitialModel initialModel)
+        {
+            var model = new OrderViewModel();
+
+            if (initialModel.ServiceId != null)
+            {
+                model.ChosenService = _dbcontext.Services.FirstOrDefault(s => s.ServiceId == initialModel.ServiceId);
+            }
+
+            if (initialModel.FirstDesigner != null)
+            {
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == initialModel.FirstDesigner);
+
+                if (user != null)
+                {
+                    model.FirstDesigner = UserViewModel.ToUserViewModel(user);
+                }
+            }
+
+            if (initialModel.SecondDesigner != null)
+            {
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == initialModel.SecondDesigner);
+
+                if (user != null)
+                {
+                    model.SecondDesigner = UserViewModel.ToUserViewModel(user);
+                }
+            }
+
+            var designers = _dbcontext.Users.Where(
+                u => u.Role == _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer")).ToList();
+            
+            var designersModels = new List<UserViewModel>();
+            
+            foreach (var designer in designers)
+            {
+                designersModels.Add(UserViewModel.ToUserViewModel(designer));
+            }
+
+            model.AllDesigners = designersModels;
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public IActionResult NewOrder(OrderViewModel model)
+        {
+            OrderInfo order = new OrderInfo();
+
+            var currentUser = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+
+            if (currentUser == null)
+            {
+                return RedirectToAction("Logout");
+            }
+
+            order.User = currentUser;
+            order.Date = DateTime.Now;
+
+            var chosenService = _dbcontext.Services.FirstOrDefault(s => s.ServiceId == model.ChosenServiceId);
+
+            if (chosenService == null)
+            {
+                ModelState.AddModelError("", "Услуга недоступна");
+                return View(model);
+            }
+
+            order.Service = chosenService;
+            order.OrderDescription = model.Description;
+            order.Price = chosenService.DefaultPrice;
+
+            var designers = new List<DesignerOrderInfoId>();
+
+            if (model.FirstDesignerId != null)
+            {
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.FirstDesignerId);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Ошибка выбора дизайнера 1");
+                    return View(model);
+                }
+
+                var entry = new DesignerOrderInfoId();
+                entry.User = user;
+                entry.Order = order;
+                
+                order.DesignerOrderInfoIds.Add(entry);
+                designers.Add(entry);
+            }
+            
+            if (model.SecondDesignerId != null && model.FirstDesignerId != model.SecondDesignerId)
+            {
+                var user = _dbcontext.Users.FirstOrDefault(u => u.UserId == model.SecondDesignerId);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Ошибка выбора дизайнера 2");
+                    return View(model);
+                }
+
+                var entry = new DesignerOrderInfoId();
+                entry.User = user;
+                entry.Order = order;
+                
+                order.DesignerOrderInfoIds.Add(entry);
+                designers.Add(entry);
+            }
+
+            _dbcontext.OrderInfos.Add(order);
+            _dbcontext.DesignerOrderInfoIds.AddRange(designers);
+            _dbcontext.SaveChanges();
+
+            return RedirectToAction("OrderEmailSending", new { orderId = order.OrderId });
         }
         
         [Authorize]
-        public IActionResult Orders()
+        [Route("Account/OrderEmailSending/{orderId:int}")]
+        public IActionResult OrderEmailSending(int orderId)
         {
-            return View();
-        }
+            var user = _dbcontext.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            var order = _dbcontext.OrderInfos
+                .Include(o => o.Service).FirstOrDefault(o => o.OrderId == orderId);
+            
+            if (user != null && order != null)
+            {
+                var to = new MailboxAddress(user.FirstName, user.Email);
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<p>Вы успешно создали заказ " + orderId + "</p><br/>" +
+                                       "<p>Услуга: " + order.Service.ServiceName + "</p><br/>" +
+                                       "<p>Стоимость: " + order.Price + "</p><br/>" +
+                                       "<p>Дата: " + order.Date.Date + "</p><br/>" +
+                                       "<p>Описание: " + order.OrderDescription + "</p>";
+                
+                bodyBuilder.TextBody = "Вы успешно создали заказ " + orderId + "\n" +
+                                       "Услуга: " + order.Service.ServiceName + "\n" +
+                                       "Стоимость: " + order.Price + "$\n" +
+                                       "Дата: " + order.Date.Date + "\n" +
+                                       "Описание: " + order.OrderDescription;
         
-        public IActionResult Works()
+                var sendEmail = _emailSender
+                    .TryToSendMail(to, "Заказ успешно создан", bodyBuilder.ToMessageBody());
+
+                if (sendEmail == EmailResult.SendSuccess)
+                {
+                    ViewData["Text"] = "Вы успешно создали заказ. Письмо с деталями Вашего заказа было отправлено" +
+                                       "на Вашу почту";
+                }
+                else
+                {
+                    ViewData["Text"] = "Вы успешно создали заказ. Произошла ошибка при попытке отправить письмо " +
+                                       "с деталями Вашего заказа на Вашу почту";
+                }
+
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        private async Task Authenticate(User user)
         {
-            return View();
+            // создаем claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.RoleName)
+            };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         /* Default admin account
@@ -330,20 +599,5 @@ namespace designer_website.Controllers
             return RedirectToAction("Index", "Home");
         }
         */
-        
-        private async Task Authenticate(User user)
-        {
-            // создаем claims
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.RoleName)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }
     }
 }

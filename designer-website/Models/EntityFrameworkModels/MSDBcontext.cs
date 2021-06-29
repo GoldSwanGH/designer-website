@@ -43,6 +43,10 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.ToTable("DesignerOrderInfoID");
 
+                entity.HasIndex(e => e.OrderId, "IX_DesignerOrderInfoID_OrderID");
+
+                entity.HasIndex(e => e.UserId, "IX_DesignerOrderInfoID_UserID");
+
                 entity.Property(e => e.DesignerOrderInfoId1).HasColumnName("DesignerOrderInfoID");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
@@ -67,6 +71,10 @@ namespace designer_website.Models.EntityFrameworkModels
                 entity.HasKey(e => e.OrderId);
 
                 entity.ToTable("OrderInfo");
+
+                entity.HasIndex(e => e.ServiceId, "IX_OrderInfo_ServiceID");
+
+                entity.HasIndex(e => e.UserId, "IX_OrderInfo_UserID");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
@@ -114,6 +122,8 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
 
+                entity.Property(e => e.ServiceDescription).IsUnicode(false);
+
                 entity.Property(e => e.ServiceName)
                     .IsRequired()
                     .HasMaxLength(500)
@@ -123,6 +133,8 @@ namespace designer_website.Models.EntityFrameworkModels
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
+
+                entity.HasIndex(e => e.RoleId, "IX_User_RoleID");
 
                 entity.HasIndex(e => e.Email, "UK_User_Email")
                     .IsUnique();
@@ -172,6 +184,10 @@ namespace designer_website.Models.EntityFrameworkModels
             {
                 entity.ToTable("UserWork");
 
+                entity.HasIndex(e => e.UserId, "IX_UserWork_UserID");
+
+                entity.HasIndex(e => e.WorkId, "IX_UserWork_WorkID");
+
                 entity.Property(e => e.UserWorkId).HasColumnName("UserWorkID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -197,12 +213,25 @@ namespace designer_website.Models.EntityFrameworkModels
 
                 entity.Property(e => e.WorkId).HasColumnName("WorkID");
 
-                entity.Property(e => e.Date).HasColumnType("date");
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(CONVERT([date],getdate()))");
 
-                entity.Property(e => e.Description)
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
+
+                entity.Property(e => e.WorkName)
                     .IsRequired()
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.Works)
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Work_Service");
             });
 
             OnModelCreatingPartial(modelBuilder);

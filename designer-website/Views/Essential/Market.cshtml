@@ -1,0 +1,38 @@
+﻿@using designer_website.Models.ViewModels
+@model ServiceCollectionViewModel
+
+@{
+    ViewData["Title"] = "Маркетплейс";
+}
+
+
+<div class="anchor block_flex_column justify-content-start">
+    <span class="block_margin-top_normal block_align_center text_size_title block_font-limit_title">Маркетплейс</span>
+    <div class="search block_align_center block_margin-top_normal">
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" onkeyup="searchFunction(this)">
+            <button class="btn btn-outline-primary" type="submit">Найти</button>
+        </form>
+    </div>
+    <div class="main__content block_flex_row block_flex_wrap justify-content-evenly block_margin-top_normal block_scroll_enable block_scrollbar_hide">
+        @foreach (var service in Model.Services)
+        {
+            <div class="card element_border_none element_border-radius_smooth element_shadow_smooth block_position_relative element_hover_transform element_hover_primary-shadow script_animate">
+                <img src="~/static-pic/photos/webpic.png" class="card-img element_border-radius_smooth" alt="нет изображения">
+                <div class="contentSearchTitle card-img-overlay card__item">
+                    <h5 class="card-title element_background_secondary-normal block_padding_normal">@service.ServiceName</h5>
+                </div>
+                <div class="card-img-overlay card__item block_align_right block_flex_column block_padding_normal block_justify_bottom">
+                     <button type="submit" class="card-title btn btn-primary btn-lg element_border-radius_smooth block_align_right text_theme_thin"> 
+                        @{
+                            var chosen = new NewOrderInitialModel();
+                            chosen.ServiceId = service.ServiceId;
+                        }
+                        @Html.ActionLink("", "NewOrder", "Account", chosen, new {@class = "button button-overlay block_position_absolute"}) 
+                        Заказать
+                     </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
