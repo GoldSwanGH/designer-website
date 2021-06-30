@@ -92,7 +92,7 @@
                     <span class="col">
                         @foreach (var author in order.Designers)
                         {
-                            @((author.LastName + " " + author.FirstName + ",").TrimEnd(','))
+                            @((author.LastName + " " + author.FirstName))<br/>
                         }
                     </span>
                     <span class="col">@((order.Order.Date).ToString("dddd, dd MMMM yyyy"))</span>
@@ -108,7 +108,7 @@
                             <span>
                                 @foreach (var author in order.Designers)
                                 {
-                                    @((author.LastName + " " + author.FirstName + ",").TrimEnd(','))
+                                    @((author.LastName + " " + author.FirstName))<br/>
                                 }
                             </span>
                             <span>@((order.Order.Date).ToString("dddd, dd MMMM yyyy"))</span>

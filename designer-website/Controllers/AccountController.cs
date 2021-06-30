@@ -130,7 +130,7 @@ namespace designer_website.Controllers
         
         [Route("Account/EmailConfirmation/{responseId:int}")]
         public IActionResult EmailConfirmation(int responseId)
-        {
+        {   
             switch (responseId)
             {
                 case 1:
@@ -173,7 +173,6 @@ namespace designer_website.Controllers
         }
         
         [HttpGet]
-        [AnonymousOnlyFilter]
         public IActionResult Recovery()
         {
             ViewData["Post"] = false;
@@ -181,11 +180,22 @@ namespace designer_website.Controllers
         }
 
         [HttpPost]
-        [AnonymousOnlyFilter]
         public IActionResult Recovery(UserViewModel recoveryViewModel)
         {
             ViewData["Post"] = true;
-            User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == recoveryViewModel.Email);
+
+            string userEmail;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                userEmail = User.Identity.Name;
+            }
+            else
+            {
+                userEmail = recoveryViewModel.Email;
+            }
+            
+            User sameUser = _dbcontext.Users.FirstOrDefault(u => u.Email == userEmail);
             if (sameUser != null)
             {
                 string token = _tokenizer.GetRandomToken();
@@ -210,7 +220,6 @@ namespace designer_website.Controllers
         
         [HttpGet]
         [Route("Account/PasswordChange/{token}")]
-        [AnonymousOnlyFilter]
         public IActionResult PasswordChange(string token)
         {
             var user = _dbcontext.Users.FirstOrDefault(u => u.Token == token);
@@ -233,7 +242,6 @@ namespace designer_website.Controllers
         }
         
         [HttpPost]
-        [AnonymousOnlyFilter]
         public IActionResult PasswordChange(PasswordChangeViewModel passwordChangeViewModel)
         {
             var user = _dbcontext.Users.FirstOrDefault(u => u.Email == passwordChangeViewModel.Email);
@@ -243,7 +251,12 @@ namespace designer_website.Controllers
                 user.Password = BC.HashPassword(passwordChangeViewModel.Password);
                 user.Token = null;
                 _dbcontext.SaveChanges();
-                
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Logout");
+                }
+
                 ViewData["Text"] = "Пароль успешно сменен. Пожалуйста, войдите в учетную запись с новым паролем.";
             }
             else
@@ -282,10 +295,7 @@ namespace designer_website.Controllers
                 
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            else
-            {
-                ModelState.AddModelError("", "Неопознанная ошибка модели");
-            }
+            
             return View();
         }
 
@@ -582,15 +592,18 @@ namespace designer_website.Controllers
         
         Default designer account
         
+        
         public IActionResult CreateDesigner()
         {
             User designer = new User
             {
-                Email = "designer@gg",
+                Email = "designer4@gg",
                 FirstName = "designer",
+                LastName = "fourth",
                 Password = BC.HashPassword("designer12345"),
                 Role = _dbcontext.Roles.FirstOrDefault(r => r.RoleName == "Designer"),
-                Tel = "2"
+                Tel = "2",
+                EmailConfirmed = true
             };
             
             _dbcontext.Users.Add(designer);
