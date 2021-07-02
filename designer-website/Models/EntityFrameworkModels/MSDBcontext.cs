@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using BC = BCrypt.Net.BCrypt;
 
 #nullable disable
 
@@ -111,6 +113,26 @@ namespace designer_website.Models.EntityFrameworkModels
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
+                
+                
+                entity.HasData(new List<Role>
+                {
+                    new Role
+                    {
+                        RoleId = 1,
+                        RoleName = "Admin"
+                    },
+                    new Role
+                    {
+                        RoleId = 2,
+                        RoleName = "Designer"
+                    },
+                    new Role
+                    {
+                        RoleId = 3,
+                        RoleName = "User"
+                    }
+                });
             });
 
             modelBuilder.Entity<Service>(entity =>
@@ -128,6 +150,39 @@ namespace designer_website.Models.EntityFrameworkModels
                     .IsRequired()
                     .HasMaxLength(500)
                     .IsUnicode(false);
+
+                entity.HasData(new List<Service>
+                {
+                    new Service
+                    {
+                        ServiceId = 1,
+                        ServiceName = "Макет сайта",
+                        DefaultPrice = 1000,
+                        ServiceDescription = "Разработка макета веб-сайта под Ваши нужды."
+                    },
+                    new Service
+                    {
+                        ServiceId = 2,
+                        ServiceName = "Логотип",
+                        DefaultPrice = 300,
+                        ServiceDescription = "Разработка логотипа, идеального подчеркивающего суть Вашего бизнеса."
+                    },
+                    new Service
+                    {
+                        ServiceId = 3,
+                        ServiceName = "Фирменный стиль",
+                        DefaultPrice = 600,
+                        ServiceDescription = "Разработка фирменного стиля, чтобы Ваш бизнес выглядел уникально" +
+                                             " и узнаваемо."
+                    },
+                    new Service
+                    {
+                        ServiceId = 4,
+                        ServiceName = "Баннер",
+                        DefaultPrice = 100,
+                        ServiceDescription = "Разработка баннера под любые Ваши нужды."
+                    }
+                });
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -178,6 +233,70 @@ namespace designer_website.Models.EntityFrameworkModels
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_Role");
+
+                entity.HasData(new List<User>
+                {
+                    new User
+                    {
+                        UserId = 1,
+                        FirstName = "admin",
+                        LastName = null,
+                        Email = "admin@gg",
+                        Password = BC.HashPassword("admin12345"),
+                        Tel = "1",
+                        RoleId = 1,
+                        EmailConfirmed = true,
+                        Token = null
+                    },
+                    new User
+                    {
+                        UserId = 2,
+                        FirstName = "designer",
+                        LastName = "first",
+                        Email = "designer1@gg",
+                        Password = BC.HashPassword("designer12345"),
+                        Tel = "2",
+                        RoleId = 2,
+                        EmailConfirmed = true,
+                        Token = null
+                    },
+                    new User
+                    {
+                        UserId = 3,
+                        FirstName = "designer",
+                        LastName = "second",
+                        Email = "designer2@gg",
+                        Password = BC.HashPassword("designer12345"),
+                        Tel = "3",
+                        RoleId = 2,
+                        EmailConfirmed = true,
+                        Token = null
+                    },
+                    new User
+                    {
+                        UserId = 4,
+                        FirstName = "designer",
+                        LastName = "third",
+                        Email = "designer3@gg",
+                        Password = BC.HashPassword("designer12345"),
+                        Tel = "4",
+                        RoleId = 2,
+                        EmailConfirmed = true,
+                        Token = null
+                    },
+                    new User
+                    {
+                        UserId = 5,
+                        FirstName = "designer",
+                        LastName = "fourth",
+                        Email = "designer4@gg",
+                        Password = BC.HashPassword("designer12345"),
+                        Tel = "5",
+                        RoleId = 2,
+                        EmailConfirmed = true,
+                        Token = null
+                    }
+                });
             });
 
             modelBuilder.Entity<UserWork>(entity =>
@@ -205,6 +324,46 @@ namespace designer_website.Models.EntityFrameworkModels
                     .HasForeignKey(d => d.WorkId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserWork_Work");
+
+                entity.HasData(new List<UserWork>
+                {
+                    new UserWork
+                    {
+                        UserWorkId = 1,
+                        UserId = 2,
+                        WorkId = 1
+                    },
+                    new UserWork
+                    {
+                        UserWorkId = 2,
+                        UserId = 3,
+                        WorkId = 1
+                    },
+                    new UserWork
+                    {
+                        UserWorkId = 3,
+                        UserId = 3,
+                        WorkId = 2
+                    },
+                    new UserWork
+                    {
+                        UserWorkId = 4,
+                        UserId = 4,
+                        WorkId = 3
+                    },
+                    new UserWork
+                    {
+                        UserWorkId = 5,
+                        UserId = 4,
+                        WorkId = 4
+                    },
+                    new UserWork
+                    {
+                        UserWorkId = 6,
+                        UserId = 5,
+                        WorkId = 4
+                    }
+                });
             });
 
             modelBuilder.Entity<Work>(entity =>
@@ -232,6 +391,43 @@ namespace designer_website.Models.EntityFrameworkModels
                     .HasForeignKey(d => d.ServiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Work_Service");
+
+                entity.HasData(new List<Work>
+                {
+                    new Work
+                    {
+                        WorkId = 1,
+                        Description = "Работа 1",
+                        Date = DateTime.Now,
+                        WorkName = "Работа 1",
+                        ServiceId = 1
+                    },
+                    new Work
+                    {
+                        WorkId = 2,
+                        Description = "Работа 2",
+                        Date = DateTime.Now,
+                        WorkName = "Работа 2",
+                        ServiceId = 2
+                    },
+                    new Work
+                    {
+                        WorkId = 3,
+                        Description = "Работа 3",
+                        Date = DateTime.Now,
+                        WorkName = "Работа 3",
+                        ServiceId = 3
+                    },
+                    new Work
+                    {
+                        WorkId = 4,
+                        Description = "Работа 4",
+                        Date = DateTime.Now,
+                        WorkName = "Работа 4",
+                        ServiceId = 4
+                    },
+                    
+                });
             });
 
             OnModelCreatingPartial(modelBuilder);
